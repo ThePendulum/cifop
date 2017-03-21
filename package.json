@@ -1,6 +1,6 @@
 {
   "name": "cifop",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Cards in Favor of Profanity",
   "main": "dist/app.js",
   "scripts": {
