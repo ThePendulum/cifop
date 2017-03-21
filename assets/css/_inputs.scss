@@ -1,0 +1,19 @@
+input:focus,
+select:focus,
+button:focus {
+    outline: none;
+}
+
+.input {
+    box-sizing: border-box;
+    padding: .5rem;
+    border: none;
+    margin: 0 0 2px 0;
+    font: inherit;
+    box-shadow: 0 1px 0 0 $grey;
+    transition: box-shadow .2s ease;
+
+    &:focus {
+        box-shadow: 0 2px 0 0 $primary;
+    }
+}
