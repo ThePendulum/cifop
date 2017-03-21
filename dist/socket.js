@@ -49,7 +49,10 @@ module.exports = function (wss) {
     };
 
     socket.connect = function (ws, req) {
+        ws.ip = ws.upgradeReq.headers['x-forwarded-for'] || ws.upgradeReq.connection.remoteAddress;
         ws.id = uuid();
+
+        note('socket', 0, '\'' + ws.ip + '\' connected');
 
         ws.nick = req.session.nick = namegen();
         req.session.save();
@@ -81,6 +84,8 @@ module.exports = function (wss) {
             close.forEach(function (handler) {
                 return handler(code, ws, req);
             });
+
+            note('socket', 0, '\'' + ws.ip + '\' disconnected');
         });
 
         init.forEach(function (handler) {

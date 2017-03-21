@@ -1,15 +1,14 @@
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var util = require('util');
 
 var note = require('note-log');
 var shortid = require('shortid');
 var pick = require('object.pick');
 
-var games = new Map();
 var Game = {};
+
+Game.games = new Map();
 
 Game.create = function () {
     var game = {
@@ -17,13 +16,15 @@ Game.create = function () {
         players: new Set()
     };
 
-    games.set(game.id, game);
+    Game.games.set(game.id, game);
+
+    note('game', 0, 'New game \'' + game.id + '\' created');
 
     return Promise.resolve(game.id);
 };
 
 Game.join = function (gameId, player) {
-    var game = games.get(gameId);
+    var game = Game.games.get(gameId);
 
     if (game && !game.players.has(player)) {
         game.players.add(player);
@@ -37,6 +38,8 @@ Game.join = function (gameId, player) {
             text: player.nick + ' has joined the game',
             date: new Date()
         }, null);
+
+        note('game', 0, '\'' + player.nick + '\' (\'' + player.id + '\') joined \'' + game.id + '\'');
     } else if (!game) {
         player.transmit('message', {
             type: 'error',
@@ -47,7 +50,7 @@ Game.join = function (gameId, player) {
 };
 
 Game.quit = function (gameId, player) {
-    var game = games.get(gameId);
+    var game = Game.games.get(gameId);
 
     if (game) {
         game.players.delete(player);
@@ -62,15 +65,17 @@ Game.quit = function (gameId, player) {
             date: new Date()
         }, null);
 
+        note('game', 0, '\'' + player.nick + '\' (\'' + player.id + '\') left \'' + game.id + '\'');
+
         if (game.players.size === 0) {
-            games.delete(game.id);
+            Game.games.delete(game.id);
         }
     }
 };
 
 Game.broadcast = function (gameId, namespace, data) {
-    if (games.has(gameId)) {
-        games.get(gameId).players.forEach(function (player) {
+    if (Game.games.has(gameId)) {
+        Game.games.get(gameId).players.forEach(function (player) {
             player.transmit(namespace, data);
         });
     }
@@ -82,14 +87,6 @@ Game.listen = function (socket) {
 
         req.session.gameId = gameId;
         req.session.save();
-    });
-
-    socket.listen('message', function (msg, ws, req) {
-        Game.broadcast(msg.room, 'message', _extends({}, msg, {
-            type: 'message',
-            nick: req.session.nick,
-            date: new Date()
-        }));
     });
 
     socket.listen('leave', function (data, ws, req) {

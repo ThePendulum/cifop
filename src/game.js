@@ -6,8 +6,9 @@ const note = require('note-log');
 const shortid = require('shortid');
 const pick = require('object.pick');
 
-const games = new Map();
 const Game = {};
+
+Game.games = new Map();
 
 Game.create = function() {
     const game = {
@@ -15,13 +16,15 @@ Game.create = function() {
         players: new Set()
     };
 
-    games.set(game.id, game);
+    Game.games.set(game.id, game);
+
+    note('game', 0, `New game '${game.id}' created`);
 
     return Promise.resolve(game.id);
 };
 
 Game.join = function(gameId, player) {
-    const game = games.get(gameId);
+    const game = Game.games.get(gameId);
 
     if(game && !game.players.has(player)) {
         game.players.add(player);
@@ -33,6 +36,8 @@ Game.join = function(gameId, player) {
             text: player.nick + ' has joined the game',
             date: new Date()
         }, null);
+
+        note('game', 0, `'${player.nick}' ('${player.id}') joined '${game.id}'`);
     } else if(!game) {
         player.transmit('message', {
             type: 'error',
@@ -43,7 +48,7 @@ Game.join = function(gameId, player) {
 };
 
 Game.quit = function(gameId, player) {
-    const game = games.get(gameId);
+    const game = Game.games.get(gameId);
 
     if(game) {
         game.players.delete(player);
@@ -56,15 +61,17 @@ Game.quit = function(gameId, player) {
             date: new Date()
         }, null);
 
+        note('game', 0, `'${player.nick}' ('${player.id}') left '${game.id}'`);
+
         if(game.players.size === 0) {
-            games.delete(game.id);
+            Game.games.delete(game.id);
         }
     }
 };
 
 Game.broadcast = function(gameId, namespace, data) {
-    if(games.has(gameId)) {
-        games.get(gameId).players.forEach(player => {
+    if(Game.games.has(gameId)) {
+        Game.games.get(gameId).players.forEach(player => {
             player.transmit(namespace, data);
         });
     }
@@ -76,15 +83,6 @@ Game.listen = function(socket) {
 
         req.session.gameId = gameId;
         req.session.save();
-    });
-
-    socket.listen('message', (msg, ws, req) => {
-        Game.broadcast(msg.room, 'message', {
-            ...msg,
-            type: 'message',
-            nick: req.session.nick,
-            date: new Date()
-        });
     });
 
     socket.listen('leave', (data, ws, req) => {
