@@ -16,7 +16,7 @@
                                 <span class="message-date">{{format(message.date, 'HH:mm')}}</span>
                             </div>
 
-                            {{message.text}}
+                            <span v-html="markdown(message.text)" class="message-text"></span>
                         </div>
 
                         <div v-if="message.type === 'status'">
@@ -35,7 +35,7 @@
                     </li>
                 </ul>
 
-                <input type="text" v-model="message" placeholder="Chat" class="input" @keypress.enter="sendMessage" @keydown.tab="autocomplete">
+                <input type="text" v-model="message" maxlength="140" placeholder="Chat" class="input" @keypress.enter="sendMessage" @keydown.tab="autocomplete">
             </div>
         </div>
     </div>
@@ -45,6 +45,13 @@
     import Vue from 'vue';
     import {mapState} from 'vuex';
     import * as dateFns from 'date-fns';
+
+    import MarkdownIt from 'markdown-it';
+    const markdown = new MarkdownIt({
+        html: false,
+        linkify: true,
+        breaks: false
+    });
 
     export default {
         data() {
@@ -84,6 +91,9 @@
             },
             format(date, format) {
                 return dateFns.format(date, format);
+            },
+            markdown(text) {
+                return markdown.renderInline(text);
             }
         },
         mounted() {
@@ -146,12 +156,20 @@
         box-sizing: border-box;
         padding: .5rem;
         margin: 0;
-        line-height: 1.5;
         overflow-y: auto;
+
+        .message {
+            padding: .25rem 0;
+        }
 
         .message-header {
             display: flex;
             justify-content: space-between;
+            margin: 0 0 .25rem;
+        }
+
+        .message-text {
+            word-wrap: break-word;
         }
 
         .message-date {

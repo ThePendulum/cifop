@@ -18,9 +18,14 @@ Game.create = function() {
 
     Game.games.set(game.id, game);
 
-    note('game', 0, `New game '${game.id}' created`);
+    note('game', 0, `Game '${game.id}' created`);
 
     return Promise.resolve(game.id);
+};
+
+Game.delete = function(gameId) {
+    Game.games.delete(gameId);
+    note('game', 0, `Game '${gameId}' deleted`);
 };
 
 Game.join = function(gameId, player) {
@@ -63,9 +68,12 @@ Game.quit = function(gameId, player) {
 
         note('game', 0, `'${player.nick}' ('${player.id}') left '${game.id}'`);
 
-        if(game.players.size === 0) {
-            Game.games.delete(game.id);
-        }
+        // e.g. allow last user to refresh page without deleting the game
+        setTimeout(() => {
+            if(game.players.size === 0) {
+                Game.delete(game.id);
+            }
+        }, 5000);
     }
 };
 
