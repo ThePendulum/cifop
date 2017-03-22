@@ -23267,7 +23267,7 @@ exports = module.exports = __webpack_require__(52)();
 
 
 // module
-exports.push([module.i, "\n.room {\n  display: flex;\n  flex-grow: 1;\n}\n.game {\n  flex-grow: 1;\n}\n.sidebar {\n  display: flex;\n  flex-direction: column;\n  border-left: solid 1px rgba(0, 0, 0, 0.2);\n}\n.players {\n  flex-grow: 1;\n  list-style: none;\n  padding: .5rem;\n  margin: 0;\n  line-height: 1.5;\n}\n.chat {\n  display: flex;\n  flex-direction: column;\n  width: 20rem;\n  height: 20rem;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  flex-grow: 1;\n  list-style: none;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.room {\n  display: flex;\n  flex-grow: 1;\n}\n.game {\n  flex-grow: 1;\n}\n.sidebar {\n  display: flex;\n  flex-direction: column;\n  border-right: solid 1px rgba(0, 0, 0, 0.2);\n}\n.players {\n  flex-grow: 1;\n  list-style: none;\n  padding: .5rem;\n  margin: 0;\n  line-height: 1.5;\n  overflow-y: auto;\n}\n.chat {\n  display: flex;\n  flex-direction: column;\n  width: 20rem;\n  height: 50%;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  flex-grow: 1;\n  list-style: none;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
 
 // exports
 
@@ -28962,8 +28962,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "content-inner room"
   }, [_c('div', {
-    staticClass: "game"
-  }, [_vm._v("Cards")]), _vm._v(" "), _c('div', {
     staticClass: "sidebar"
   }, [_c('ul', {
     staticClass: "players"
@@ -29033,7 +29031,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.message = $event.target.value
       }
     }
-  })])])])
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "game"
+  }, [_vm._v("Cards")])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

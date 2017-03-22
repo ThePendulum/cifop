@@ -1,7 +1,5 @@
 <template>
     <div class="content-inner room">
-        <div class="game">Cards</div>
-
         <div class="sidebar">
             <ul class="players">
                 <li v-for="player in players" class="player">{{player.nick}}</li>
@@ -38,6 +36,8 @@
                 <input type="text" v-model="message" maxlength="140" placeholder="Chat" class="input" @keypress.enter="sendMessage" @keydown.tab="autocomplete">
             </div>
         </div>
+
+        <div class="game">Cards</div>
     </div>
 </template>
 
@@ -123,7 +123,7 @@
     .sidebar {
         display: flex;
         flex-direction: column;
-        border-left: solid 1px $shadow;
+        border-right: solid 1px $shadow;
     }
 
     .players {
@@ -132,13 +132,14 @@
         padding: .5rem;
         margin: 0;
         line-height: 1.5;
+        overflow-y: auto;
     }
 
     .chat {
         display: flex;
         flex-direction: column;
         width: 20rem;
-        height: 20rem;
+        height: 50%;
         border-top: solid 1px $shadow;
 
         .input {
