@@ -1,5 +1,8 @@
 'use strict';
 
+const note = require('note-log');
+const pick = require('object.pick');
+
 module.exports = function(Game) {
     return function(gameId, player) {
         const game = Game.games.get(gameId);

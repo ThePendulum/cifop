@@ -17,7 +17,7 @@ var session = require('express-session');
 var knexSessionStore = require('connect-session-knex')(session);
 
 var expressWs = require('express-ws');
-var Socket = require('./socket.js');
+var Hub = require('./hub.js');
 
 var createGame = require('./api/createGame.js');
 
@@ -28,7 +28,10 @@ module.exports = function () {
     var router = Router();
 
     var wss = expressWs(app);
-    var socket = Socket(wss.getWss());
+
+    var _Hub = Hub(wss.getWss()),
+        hub = _Hub.hub,
+        events = _Hub.events;
 
     app.use(session(_extends({}, config.session, {
         store: store
@@ -39,11 +42,18 @@ module.exports = function () {
     router.use('/img', express.static('public/img'));
 
     app.use(router);
+    app.use(function (error, req, res, next) {
+        note('web', error);
+
+        res.status(500).send();
+
+        next();
+    });
 
     router.post('/api/game', createGame);
 
     router.ws('/socket', function (ws, req) {
-        socket.connect(ws, req);
+        hub.connect(ws, req);
     });
 
     router.get('*', function (req, res) {
@@ -54,5 +64,5 @@ module.exports = function () {
         note('server', 'Web server listening on port ' + config.web.port);
     });
 
-    return socket;
+    return events;
 };

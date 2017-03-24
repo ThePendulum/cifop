@@ -10,13 +10,11 @@ var uuid = require('uuid');
 var namegen = require('./namegen/namegen.js');
 
 module.exports = function (wss) {
-    var socket = {};
+    var hub = {};
+    var EventEmitter = require('events');
+    var events = new EventEmitter();
 
-    var listeners = new Map();
-    var init = new Set();
-    var close = new Set();
-
-    socket.broadcast = function (namespace, data) {
+    hub.broadcast = function (namespace, data) {
         wss.clients.forEach(function (client) {
             if (client.readyState === 1) {
                 client.send(JSON.stringify([namespace, data]));
@@ -24,44 +22,22 @@ module.exports = function (wss) {
         });
     };
 
-    socket.listen = function (namespace, handler, broadcast, bounce) {
-        var proxyHandler = function proxyHandler(data, ws, req) {
-            handler(data, ws, req);
-
-            if (broadcast === true) {
-                socket.broadcast(namespace, data);
-            }
-        };
-
-        if (listeners.has(namespace)) {
-            listeners.get(namespace).add(proxyHandler);
-        } else {
-            listeners.set(namespace, new Set([proxyHandler]));
-        }
-    };
-
-    socket.init = function (handler) {
-        init.add(handler);
-    };
-
-    socket.close = function (handler) {
-        close.add(handler);
-    };
-
-    socket.connect = function (ws, req) {
+    hub.connect = function (ws, req) {
         ws.ip = ws.upgradeReq.headers['x-forwarded-for'] || ws.upgradeReq.connection.remoteAddress;
         ws.id = uuid();
 
-        note('socket', 0, '\'' + ws.ip + '\' connected');
-
         ws.nick = req.session.nick = namegen();
         req.session.save();
+
+        note('hub', 0, '\'' + ws.nick + '\' (\'' + ws.ip + '\', \'' + ws.id + '\') connected');
 
         ws.transmit = function (namespace, data) {
             if (ws.readyState === 1) {
                 ws.send(JSON.stringify([namespace, data]));
             }
         };
+
+        events.emit('connect', ws);
 
         ws.on('message', function (msg) {
             try {
@@ -70,26 +46,16 @@ module.exports = function (wss) {
                     namespace = _JSON$parse2[0],
                     data = _JSON$parse2[1];
 
-                if (listeners.has(namespace)) {
-                    listeners.get(namespace).forEach(function (listener) {
-                        return listener(data, ws, req);
-                    });
-                }
+                events.emit(namespace, data, ws, req);
             } catch (error) {
                 note('socket', error);
             }
         });
 
         ws.on('close', function (code) {
-            close.forEach(function (handler) {
-                return handler(code, ws, req);
-            });
+            events.emit('close', code, ws, req);
 
-            note('socket', 0, '\'' + ws.ip + '\' disconnected');
-        });
-
-        init.forEach(function (handler) {
-            return handler(ws);
+            note('hub', 0, '\'' + ws.ip + '\' disconnected');
         });
 
         var ping = function ping() {
@@ -101,9 +67,5 @@ module.exports = function (wss) {
         ping();
     };
 
-    socket.init(function (ws) {
-        ws.transmit('nick', ws.nick);
-    });
-
-    return socket;
+    return { hub: hub, events: events };
 };

@@ -1,5 +1,5 @@
 'use strict';
 
-var socket = require('./web.js')();
-require('./game.js').listen(socket);
-require('./chat.js')(socket);
+var events = require('./web.js')();
+require('./game').listen(events);
+require('./chat.js')(events);

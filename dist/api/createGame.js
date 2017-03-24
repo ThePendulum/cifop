@@ -1,9 +1,9 @@
 'use strict';
 
-var game = require('../game.js');
+var Game = require('../game');
 
 module.exports = function (req, res) {
-    game.create().then(function (gameId) {
+    Game.create().then(function (gameId) {
         res.send(gameId);
     });
 };

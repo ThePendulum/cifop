@@ -1,5 +1,8 @@
 'use strict';
 
+var note = require('note-log');
+var shortid = require('shortid');
+
 module.exports = function (Game) {
     return function () {
         var game = {

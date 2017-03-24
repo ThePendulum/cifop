@@ -3,14 +3,14 @@
 const util = require('util');
 const note = require('note-log');
 
-const Game = require('./game.js');
+const Game = require('./game');
 
-module.exports = function(socket) {
-    socket.init(ws => {
+module.exports = function(events) {
+    events.on('connect', ws => {
         ws.throttleStack = [];
     });
 
-    socket.listen('message', (msg, ws, req) => {
+    events.on('message', (msg, ws, req) => {
         ws.throttleStack = ws.throttleStack.concat(new Date().getTime()).slice(-5);
 
         msg.text = msg.text.slice(0, 140);

@@ -5,14 +5,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var util = require('util');
 var note = require('note-log');
 
-var Game = require('./game.js');
+var Game = require('./game');
 
-module.exports = function (socket) {
-    socket.init(function (ws) {
+module.exports = function (events) {
+    events.on('connect', function (ws) {
         ws.throttleStack = [];
     });
 
-    socket.listen('message', function (msg, ws, req) {
+    events.on('message', function (msg, ws, req) {
         ws.throttleStack = ws.throttleStack.concat(new Date().getTime()).slice(-5);
 
         msg.text = msg.text.slice(0, 140);

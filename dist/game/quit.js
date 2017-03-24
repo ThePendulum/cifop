@@ -1,5 +1,7 @@
 'use strict';
 
+var note = require('note-log');
+
 module.exports = function (Game) {
     return function (gameId, player) {
         var game = Game.games.get(gameId);

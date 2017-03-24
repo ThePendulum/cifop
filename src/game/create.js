@@ -1,5 +1,8 @@
 'use strict';
 
+const note = require('note-log');
+const shortid = require('shortid');
+
 module.exports = function(Game) {
     return function() {
         const game = {
