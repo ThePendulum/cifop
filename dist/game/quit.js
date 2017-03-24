@@ -1,6 +1,7 @@
 'use strict';
 
 var note = require('note-log');
+var pick = require('object.pick');
 
 module.exports = function (Game) {
     return function (gameId, player) {
@@ -24,7 +25,7 @@ module.exports = function (Game) {
             // e.g. allow last user to refresh page without deleting the game
             setTimeout(function () {
                 if (game.players.size === 0) {
-                    Game.delete(game.id);
+                    Game.remove(game.id);
                 }
             }, 5000);
         }

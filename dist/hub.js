@@ -14,6 +14,8 @@ module.exports = function (wss) {
     var EventEmitter = require('events');
     var events = new EventEmitter();
 
+    hub.connections = new Map();
+
     hub.broadcast = function (namespace, data) {
         wss.clients.forEach(function (client) {
             if (client.readyState === 1) {
@@ -29,15 +31,16 @@ module.exports = function (wss) {
         ws.nick = req.session.nick = namegen();
         req.session.save();
 
-        note('hub', 0, '\'' + ws.nick + '\' (\'' + ws.ip + '\', \'' + ws.id + '\') connected');
-
         ws.transmit = function (namespace, data) {
             if (ws.readyState === 1) {
                 ws.send(JSON.stringify([namespace, data]));
             }
         };
 
+        hub.connections.set(ws.id, ws);
         events.emit('connect', ws);
+
+        note('hub', 0, '\'' + ws.nick + '\' (\'' + ws.ip + '\', \'' + ws.id + '\') connected');
 
         ws.on('message', function (msg) {
             try {
@@ -53,6 +56,7 @@ module.exports = function (wss) {
         });
 
         ws.on('close', function (code) {
+            hub.connections.delete(ws.id);
             events.emit('close', code, ws, req);
 
             note('hub', 0, '\'' + ws.ip + '\' disconnected');
