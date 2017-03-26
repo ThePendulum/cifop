@@ -45,7 +45,7 @@
         <div class="game">
             <div class="game-header"></div>
 
-            <vue-config />
+            <vue-config v-if="view === 'config'" />
         </div>
     </div>
 </template>
@@ -73,7 +73,8 @@
         data() {
             return {
                 id: this.$route.params.id,
-                message: null
+                message: null,
+                view: 'config'
             };
         },
         computed: {

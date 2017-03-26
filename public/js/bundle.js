@@ -18087,7 +18087,8 @@ exports.default = {
     data: function data() {
         return {
             id: this.$route.params.id,
-            message: null
+            message: null,
+            view: 'config'
         };
     },
 
@@ -39534,7 +39535,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "game"
   }, [_c('div', {
     staticClass: "game-header"
-  }), _vm._v(" "), _c('vue-config')], 1)])
+  }), _vm._v(" "), (_vm.view === 'config') ? _c('vue-config') : _vm._e()], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
