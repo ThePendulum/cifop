@@ -5,16 +5,13 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 var util = require('util');
 
 var note = require('note-log');
-var uuid = require('uuid');
 
-var namegen = require('./namegen/namegen.js');
+var Player = require('./player.js');
 
 module.exports = function (wss) {
     var hub = {};
     var EventEmitter = require('events');
     var events = new EventEmitter();
-
-    hub.connections = new Map();
 
     hub.broadcast = function (namespace, data) {
         wss.clients.forEach(function (client) {
@@ -26,21 +23,20 @@ module.exports = function (wss) {
 
     hub.connect = function (ws, req) {
         ws.ip = ws.upgradeReq.headers['x-forwarded-for'] || ws.upgradeReq.connection.remoteAddress;
-        ws.id = uuid();
 
-        ws.nick = req.session.nick = namegen();
+        var player = Player(req.session.playerId);
+
+        req.session.playerId = player.id;
         req.session.save();
 
-        ws.transmit = function (namespace, data) {
+        player.transmit = function (namespace, data) {
             if (ws.readyState === 1) {
                 ws.send(JSON.stringify([namespace, data]));
             }
         };
 
-        hub.connections.set(ws.id, ws);
-        events.emit('connect', ws);
-
-        note('hub', 0, '\'' + ws.nick + '\' (\'' + ws.ip + '\', \'' + ws.id + '\') connected');
+        events.emit('connect', player);
+        note('hub', 0, '\'' + player.nick + '\' (\'' + ws.ip + '\', \'' + player.id + '\') connected');
 
         ws.on('message', function (msg) {
             try {
@@ -49,21 +45,19 @@ module.exports = function (wss) {
                     namespace = _JSON$parse2[0],
                     data = _JSON$parse2[1];
 
-                events.emit(namespace, data, ws, req);
+                events.emit(namespace, data, player);
             } catch (error) {
                 note('socket', error);
             }
         });
 
         ws.on('close', function (code) {
-            hub.connections.delete(ws.id);
-            events.emit('close', code, ws, req);
-
-            note('hub', 0, '\'' + ws.ip + '\' disconnected');
+            events.emit('close', code, player);
+            note('hub', 0, '\'' + player.nick + '\' (\'' + ws.ip + '\', \'' + player.id + '\') disconnected');
         });
 
         var ping = function ping() {
-            ws.transmit('ping');
+            player.transmit('ping');
 
             setTimeout(ping, 5000);
         };

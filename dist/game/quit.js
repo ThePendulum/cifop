@@ -4,17 +4,18 @@ var note = require('note-log');
 var pick = require('object.pick');
 
 module.exports = function (Game) {
-    return function (gameId, player) {
-        var game = Game.games.get(gameId);
+    return function (player) {
+        var game = Game.games.get(player.gameId);
 
         if (game) {
-            game.players.delete(player);
+            player.gameId = null;
+            game.players.delete(player.id);
 
-            Game.broadcast(gameId, 'players', Array.from(game.players).map(function (player) {
+            Game.broadcast(player.gameId, 'players', Array.from(game.players).map(function (player) {
                 return pick(player, ['id', 'nick']);
             }));
 
-            Game.broadcast(gameId, 'message', {
+            Game.broadcast(player.gameId, 'message', {
                 type: 'status',
                 text: player.nick + ' has left the game',
                 date: new Date()

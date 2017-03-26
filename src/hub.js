@@ -3,16 +3,13 @@
 const util = require('util');
 
 const note = require('note-log');
-const uuid = require('uuid');
 
-const namegen = require('./namegen/namegen.js');
+const Player = require('./player.js');
 
 module.exports = function(wss) {
     const hub = {};
     const EventEmitter = require('events');
     const events = new EventEmitter();
-
-    hub.connections = new Map();
 
     hub.broadcast = function(namespace, data) {
         wss.clients.forEach(client => {
@@ -24,41 +21,38 @@ module.exports = function(wss) {
 
     hub.connect = function(ws, req) {
         ws.ip = ws.upgradeReq.headers['x-forwarded-for'] || ws.upgradeReq.connection.remoteAddress;
-        ws.id = uuid();
 
-        ws.nick = req.session.nick = namegen();
+        const player = Player(req.session.playerId);
+
+        req.session.playerId = player.id;
         req.session.save();
 
-        ws.transmit = function(namespace, data) {
+        player.transmit = function(namespace, data) {
             if(ws.readyState === 1) {
                 ws.send(JSON.stringify([namespace, data]));
             }
         };
 
-        hub.connections.set(ws.id, ws);
-        events.emit('connect', ws);
-
-        note('hub', 0, `'${ws.nick}' ('${ws.ip}', '${ws.id}') connected`);
+        events.emit('connect', player);
+        note('hub', 0, `'${player.nick}' ('${ws.ip}', '${player.id}') connected`);
 
         ws.on('message', msg => {
             try {
                 const [namespace, data] = JSON.parse(msg);
 
-                events.emit(namespace, data, ws, req);
+                events.emit(namespace, data, player);
             } catch(error) {
                 note('socket', error);
             }
         });
 
         ws.on('close', code => {
-            hub.connections.delete(ws.id);
-            events.emit('close', code, ws, req);
-
-            note('hub', 0, `'${ws.ip}' disconnected`);
+            events.emit('close', code, player);
+            note('hub', 0, `'${player.nick}' ('${ws.ip}', '${player.id}') disconnected`);
         });
 
         const ping = function() {
-            ws.transmit('ping');
+            player.transmit('ping');
 
             setTimeout(ping, 5000);
         };

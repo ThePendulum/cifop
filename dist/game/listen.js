@@ -1,19 +1,13 @@
 'use strict';
 
 module.exports = function (Game) {
-    var leave = function leave(data, ws, req) {
-        Game.quit(req.session.gameId, ws);
-
-        req.session.gameId = null;
-        req.session.save();
+    var leave = function leave(data, player) {
+        Game.quit(player);
     };
 
     return function (events) {
         events.on('join', function (gameId, ws, req) {
             Game.join(gameId, ws);
-
-            req.session.gameId = gameId;
-            req.session.save();
         });
 
         events.on('leave', leave);
