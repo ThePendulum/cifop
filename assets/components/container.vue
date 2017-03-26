@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <vue-header />
+        <vue-header v-if="header" />
 
         <div class="content">
             <router-view />
@@ -14,6 +14,16 @@
     export default {
         components: {
             'vue-header': Header
+        },
+        data() {
+            return {
+                header: this.$route.meta.header !== false
+            };
+        },
+        watch: {
+            '$route': function(to, from) {
+                this.header = to.meta.header !== false;
+            }
         }
     };
 </script>

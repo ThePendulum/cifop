@@ -15,7 +15,10 @@ const routes = [{
 }, {
     path: '/room/:id',
     name: 'room',
-    component: Room
+    component: Room,
+    meta: {
+        header: false
+    }
 }];
 
 export default new VueRouter({

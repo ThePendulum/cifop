@@ -1,6 +1,11 @@
 <template>
     <div class="content-inner room">
         <div class="sidebar">
+            <div class="sidebar-header">
+                <router-link :to="{name: 'home'}" class="logo"><vue-svg icon="logo" label="Cards in Favor of Profanity" /></router-link>
+                <h2 class="sidebar-room">{{id}}</h2>
+            </div>
+
             <ul class="players">
                 <li v-for="player in players" class="player">{{player.nick}}</li>
             </ul>
@@ -37,7 +42,11 @@
             </div>
         </div>
 
-        <div class="game">Cards</div>
+        <div class="game">
+            <div class="game-header"></div>
+
+            <vue-config />
+        </div>
     </div>
 </template>
 
@@ -45,6 +54,9 @@
     import Vue from 'vue';
     import {mapState} from 'vuex';
     import * as dateFns from 'date-fns';
+
+    import Svg from './svg.vue';
+    import Config from './config.vue';
 
     import MarkdownIt from 'markdown-it';
     const markdown = new MarkdownIt({
@@ -54,6 +66,10 @@
     });
 
     export default {
+        components: {
+            'vue-svg': Svg,
+            'vue-config': Config
+        },
         data() {
             return {
                 id: this.$route.params.id,
@@ -120,10 +136,27 @@
         flex-grow: 1;
     }
 
+    .game-content {
+        padding: .5rem;
+    }
+
     .sidebar {
         display: flex;
         flex-direction: column;
         border-right: solid 1px $shadow;
+    }
+
+    .game-header,
+    .sidebar-header {
+        display: flex;
+        align-items: center;
+        height: 4rem;
+        padding: 0 .5rem;
+        border-bottom: solid 1px $shadow;
+    }
+
+    .sidebar-room {
+        margin: 0 0 0 .5rem;
     }
 
     .players {

@@ -17721,7 +17721,10 @@ var routes = [{
 }, {
     path: '/room/:id',
     name: 'room',
-    component: _room2.default
+    component: _room2.default,
+    meta: {
+        header: false
+    }
 }];
 
 exports.default = new _vueRouter2.default({
@@ -17859,6 +17862,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = {
     components: {
         'vue-header': _header2.default
+    },
+    data: function data() {
+        return {
+            header: this.$route.meta.header !== false
+        };
+    },
+
+    watch: {
+        '$route': function $route(to, from) {
+            this.header = to.meta.header !== false;
+        }
     }
 }; //
 //
@@ -18023,6 +18037,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var _vue = __webpack_require__(61);
 
@@ -18033,6 +18056,14 @@ var _vuex = __webpack_require__(118);
 var _dateFns = __webpack_require__(441);
 
 var dateFns = _interopRequireWildcard(_dateFns);
+
+var _svg = __webpack_require__(569);
+
+var _svg2 = _interopRequireDefault(_svg);
+
+var _config = __webpack_require__(584);
+
+var _config2 = _interopRequireDefault(_config);
 
 var _markdownIt = __webpack_require__(510);
 
@@ -18049,6 +18080,10 @@ var _markdown = new _markdownIt2.default({
 });
 
 exports.default = {
+    components: {
+        'vue-svg': _svg2.default,
+        'vue-config': _config2.default
+    },
     data: function data() {
         return {
             id: this.$route.params.id,
@@ -24480,7 +24515,7 @@ exports = module.exports = __webpack_require__(53)();
 
 
 // module
-exports.push([module.i, "\n.room {\n  display: flex;\n  flex-grow: 1;\n}\n.game {\n  flex-grow: 1;\n}\n.sidebar {\n  display: flex;\n  flex-direction: column;\n  border-right: solid 1px rgba(0, 0, 0, 0.2);\n}\n.players {\n  flex-grow: 1;\n  list-style: none;\n  padding: .5rem;\n  margin: 0;\n  line-height: 1.5;\n  overflow-y: auto;\n}\n.chat {\n  display: flex;\n  flex-direction: column;\n  width: 20rem;\n  height: 50%;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  flex-grow: 1;\n  list-style: none;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.room {\n  display: flex;\n  flex-grow: 1;\n}\n.game {\n  flex-grow: 1;\n}\n.game-content {\n  padding: .5rem;\n}\n.sidebar {\n  display: flex;\n  flex-direction: column;\n  border-right: solid 1px rgba(0, 0, 0, 0.2);\n}\n.game-header,\n.sidebar-header {\n  display: flex;\n  align-items: center;\n  height: 4rem;\n  padding: 0 .5rem;\n  border-bottom: solid 1px rgba(0, 0, 0, 0.2);\n}\n.sidebar-room {\n  margin: 0 0 0 .5rem;\n}\n.players {\n  flex-grow: 1;\n  list-style: none;\n  padding: .5rem;\n  margin: 0;\n  line-height: 1.5;\n  overflow-y: auto;\n}\n.chat {\n  display: flex;\n  flex-direction: column;\n  width: 20rem;\n  height: 50%;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  flex-grow: 1;\n  list-style: none;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
 
 // exports
 
@@ -39411,7 +39446,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "content-inner room"
   }, [_c('div', {
     staticClass: "sidebar"
-  }, [_c('ul', {
+  }, [_c('div', {
+    staticClass: "sidebar-header"
+  }, [_c('router-link', {
+    staticClass: "logo",
+    attrs: {
+      "to": {
+        name: 'home'
+      }
+    }
+  }, [_c('vue-svg', {
+    attrs: {
+      "icon": "logo",
+      "label": "Cards in Favor of Profanity"
+    }
+  })], 1), _vm._v(" "), _c('h2', {
+    staticClass: "sidebar-room"
+  }, [_vm._v(_vm._s(_vm.id))])], 1), _vm._v(" "), _c('ul', {
     staticClass: "players"
   }, _vm._l((_vm.players), function(player) {
     return _c('li', {
@@ -39481,7 +39532,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })])]), _vm._v(" "), _c('div', {
     staticClass: "game"
-  }, [_vm._v("Cards")])])
+  }, [_c('div', {
+    staticClass: "game-header"
+  }), _vm._v(" "), _c('vue-config')], 1)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -39498,7 +39551,7 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "container"
-  }, [_c('vue-header'), _vm._v(" "), _c('div', {
+  }, [(_vm.header) ? _c('vue-header') : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "content"
   }, [_c('router-view')], 1)], 1)
 },staticRenderFns: []}
@@ -42026,6 +42079,104 @@ new _vue2.default({
         return createElement(_container2.default);
     }
 });
+
+/***/ }),
+/* 584 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(58)(
+  /* script */
+  __webpack_require__(586),
+  /* template */
+  __webpack_require__(585),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/niels/projects/cifop/assets/components/config.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] config.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-55dcc1ea", Component.options)
+  } else {
+    hotAPI.reload("data-v-55dcc1ea", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 585 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "game-content"
+  }, [_c('label', [_vm._v("Players "), _c('input', {
+    attrs: {
+      "type": "number",
+      "min": "3",
+      "max": "20"
+    },
+    domProps: {
+      "value": _vm.maxPlayers
+    },
+    on: {
+      "input": _vm.setMaxPlayers,
+      "wheel": _vm.shiftMaxPlayers
+    }
+  })])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-55dcc1ea", module.exports)
+  }
+}
+
+/***/ }),
+/* 586 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+//
+//
+//
+//
+//
+//
+
+exports.default = {
+    data: function data() {
+        return {
+            maxPlayers: 6
+        };
+    },
+
+    methods: {
+        setMaxPlayers: function setMaxPlayers(event) {
+            this.maxPlayers = Number(event.target.value);
+        },
+        shiftMaxPlayers: function shiftMaxPlayers(event) {
+            this.maxPlayers = Math.min(20, Math.max(3, this.maxPlayers + (event.deltaY < 0 ? 1 : -1)));
+        }
+    }
+};
 
 /***/ })
 /******/ ]);
