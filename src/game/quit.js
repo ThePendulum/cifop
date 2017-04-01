@@ -9,7 +9,7 @@ module.exports = function(Game) {
 
         if(game) {
             player.gameId = null;
-            game.players.delete(player.id);
+            game.players.delete(player);
 
             Game.broadcast(player.gameId, 'players', Array.from(game.players).map(player => pick(player, ['id', 'nick'])));
 

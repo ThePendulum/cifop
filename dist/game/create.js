@@ -7,7 +7,11 @@ module.exports = function (Game) {
     return function () {
         var game = {
             id: shortid.generate(),
-            players: new Map()
+            players: new Set(),
+            settings: {
+                players: 8,
+                score: 8
+            }
         };
 
         Game.games.set(game.id, game);

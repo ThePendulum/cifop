@@ -10,6 +10,10 @@ module.exports = function (Game) {
             Game.join(gameId, ws);
         });
 
+        events.on('settings', function (settings, player) {
+            Game.settings(player.gameId, settings);
+        });
+
         events.on('leave', leave);
         events.on('close', leave);
     };

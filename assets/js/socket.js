@@ -30,6 +30,9 @@ ws.addEventListener('message', message => {
         },
         players(players) {
             store.commit('setPlayers', players);
+        },
+        settings(settings) {
+            store.commit('settings', settings);
         }
     };
 

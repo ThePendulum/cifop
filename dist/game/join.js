@@ -16,11 +16,12 @@ module.exports = function (Game) {
                 });
             } else {
                 player.gameId = gameId;
-                game.players.set(player.id, player);
+                game.players.add(player);
 
                 Game.broadcast(gameId, 'players', Array.from(game.players).map(function (player) {
                     return pick(player, ['id', 'nick']);
                 }));
+                Game.broadcast(gameId, 'settings', game.settings);
 
                 Game.broadcast(gameId, 'message', {
                     type: 'status',
@@ -33,7 +34,7 @@ module.exports = function (Game) {
         } else {
             player.transmit('message', {
                 type: 'error',
-                text: 'Room does not exist',
+                text: 'Game does not exist',
                 date: new Date()
             });
         }

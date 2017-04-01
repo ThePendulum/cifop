@@ -10,6 +10,7 @@ const create = require('./create.js');
 const remove = require('./remove.js');
 const join = require('./join.js');
 const quit = require('./quit.js');
+const settings = require('./settings.js');
 const broadcast = require('./broadcast.js');
 const listen = require('./listen.js');
 
@@ -20,6 +21,7 @@ Game.create = create(Game);
 Game.remove = remove(Game);
 Game.join = join(Game);
 Game.quit = quit(Game);
+Game.settings = settings(Game);
 Game.broadcast = broadcast(Game);
 Game.listen = listen(Game);
 

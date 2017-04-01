@@ -2,5 +2,9 @@
 
 export default {
     nick: null,
-    players: []
+    players: [],
+    settings: {
+        players: 8,
+        score: 8
+    }
 };

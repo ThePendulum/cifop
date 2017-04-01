@@ -1,5 +1,7 @@
 'use strict';
 
+import pick from 'object.pick';
+
 export default {
     nick(state, nick) {
         state.nick = nick;
@@ -12,5 +14,8 @@ export default {
     },
     clearPlayers(state) {
         state.players = [];
+    },
+    settings(state, settings) {
+        Object.assign(state.settings, pick(settings, Object.keys(state.settings)));
     }
 };

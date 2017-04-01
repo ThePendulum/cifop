@@ -22,7 +22,7 @@ module.exports = function(wss) {
     hub.connect = function(ws, req) {
         ws.ip = ws.upgradeReq.headers['x-forwarded-for'] || ws.upgradeReq.connection.remoteAddress;
 
-        const player = Player(req.session.playerId);
+        const player = Player(req.session.playerId, events);
 
         req.session.playerId = player.id;
         req.session.save();

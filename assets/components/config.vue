@@ -1,22 +1,30 @@
 <template>
     <div class="game-content">
-        <label>Players <input type="number" min="3" max="20" :value="maxPlayers" @input="setMaxPlayers" @wheel="shiftMaxPlayers"></label>
+        <label>Players <input type="number" min="3" max="20" :value="players" @input="set('players', $event)" @wheel="shift('players', $event)"></label>
+        <label>Score <input type="number" min="2" max="20" :value="score" @input="set('score', $event)" @wheel="shift('score', $event)"></label>
     </div>
 </template>
 
 <script>
+    import {mapState} from 'vuex';
+
     export default {
-        data() {
-            return {
-                maxPlayers: 6
-            };
+        computed: {
+            ...mapState({
+                players: state => state.game.settings.players,
+                score: state => state.game.settings.score
+            })
         },
         methods: {
-            setMaxPlayers(event) {
-                this.maxPlayers = Number(event.target.value);
+            set(target, event) {
+                this.$store.dispatch('settings', {
+                    [target]: Number(event.target.value)
+                });
             },
-            shiftMaxPlayers(event) {
-                this.maxPlayers = Math.min(20, Math.max(3, this.maxPlayers + (event.deltaY < 0 ? 1 : -1)));
+            shift(target, event) {
+                this.$store.dispatch('settings', {
+                    [target]: Math.min(20, Math.max(3, this[target] + (event.deltaY < 0 ? 1 : -1)))
+                });
             }
         }
     };

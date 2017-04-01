@@ -12566,6 +12566,9 @@ ws.addEventListener('message', function (message) {
         },
         players: function players(_players) {
             _store2.default.commit('setPlayers', _players);
+        },
+        settings: function settings(_settings) {
+            _store2.default.commit('settings', _settings);
         }
     };
 
@@ -18324,12 +18327,17 @@ var _leaveGame = __webpack_require__(210);
 
 var _leaveGame2 = _interopRequireDefault(_leaveGame);
 
+var _settings = __webpack_require__(587);
+
+var _settings2 = _interopRequireDefault(_settings);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
     createGame: _createGame2.default,
     joinGame: _joinGame2.default,
-    leaveGame: _leaveGame2.default
+    leaveGame: _leaveGame2.default,
+    settings: _settings2.default
 };
 
 /***/ }),
@@ -18419,6 +18427,13 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _object = __webpack_require__(589);
+
+var _object2 = _interopRequireDefault(_object);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = {
     nick: function nick(state, _nick) {
         state.nick = _nick;
@@ -18433,6 +18448,9 @@ exports.default = {
     },
     clearPlayers: function clearPlayers(state) {
         state.players = [];
+    },
+    settings: function settings(state, _settings) {
+        Object.assign(state.settings, (0, _object2.default)(_settings, Object.keys(state.settings)));
     }
 };
 
@@ -18448,7 +18466,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     nick: null,
-    players: []
+    players: [],
+    settings: {
+        players: 8,
+        score: 8
+    }
 };
 
 /***/ }),
@@ -42129,11 +42151,32 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "max": "20"
     },
     domProps: {
-      "value": _vm.maxPlayers
+      "value": _vm.players
     },
     on: {
-      "input": _vm.setMaxPlayers,
-      "wheel": _vm.shiftMaxPlayers
+      "input": function($event) {
+        _vm.set('players', $event)
+      },
+      "wheel": function($event) {
+        _vm.shift('players', $event)
+      }
+    }
+  })]), _vm._v(" "), _c('label', [_vm._v("Score "), _c('input', {
+    attrs: {
+      "type": "number",
+      "min": "2",
+      "max": "20"
+    },
+    domProps: {
+      "value": _vm.score
+    },
+    on: {
+      "input": function($event) {
+        _vm.set('score', $event)
+      },
+      "wheel": function($event) {
+        _vm.shift('score', $event)
+      }
     }
   })])])
 },staticRenderFns: []}
@@ -42155,29 +42198,124 @@ if (false) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
 //
 //
 //
 //
 //
 //
+
+var _vuex = __webpack_require__(118);
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 exports.default = {
-    data: function data() {
-        return {
-            maxPlayers: 6
-        };
-    },
-
-    methods: {
-        setMaxPlayers: function setMaxPlayers(event) {
-            this.maxPlayers = Number(event.target.value);
+    computed: _extends({}, (0, _vuex.mapState)({
+        players: function players(state) {
+            return state.game.settings.players;
         },
-        shiftMaxPlayers: function shiftMaxPlayers(event) {
-            this.maxPlayers = Math.min(20, Math.max(3, this.maxPlayers + (event.deltaY < 0 ? 1 : -1)));
+        score: function score(state) {
+            return state.game.settings.score;
+        }
+    })),
+    methods: {
+        set: function set(target, event) {
+            this.$store.dispatch('settings', _defineProperty({}, target, Number(event.target.value)));
+        },
+        shift: function shift(target, event) {
+            this.$store.dispatch('settings', _defineProperty({}, target, Math.min(20, Math.max(3, this[target] + (event.deltaY < 0 ? 1 : -1)))));
         }
     }
 };
+
+/***/ }),
+/* 587 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function (context, settings) {
+    context.commit('settings', settings);
+    _socket2.default.transmit('settings', settings);
+};
+
+var _socket = __webpack_require__(78);
+
+var _socket2 = _interopRequireDefault(_socket);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+;
+
+/***/ }),
+/* 588 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*!
+ * isobject <https://github.com/jonschlinkert/isobject>
+ *
+ * Copyright (c) 2014-2015, Jon Schlinkert.
+ * Licensed under the MIT License.
+ */
+
+
+
+var isArray = __webpack_require__(507);
+
+module.exports = function isObject(val) {
+  return val != null && typeof val === 'object' && isArray(val) === false;
+};
+
+
+/***/ }),
+/* 589 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*!
+ * object.pick <https://github.com/jonschlinkert/object.pick>
+ *
+ * Copyright (c) 2014-2015 Jon Schlinkert, contributors.
+ * Licensed under the MIT License
+ */
+
+
+
+var isObject = __webpack_require__(588);
+
+module.exports = function pick(obj, keys) {
+  if (!isObject(obj) && typeof obj !== 'function') {
+    return {};
+  }
+
+  var res = {};
+  if (typeof keys === 'string') {
+    if (keys in obj) {
+      res[keys] = obj[keys];
+    }
+    return res;
+  }
+
+  var len = keys.length;
+  var idx = -1;
+
+  while (++idx < len) {
+    var key = keys[idx];
+    if (key in obj) {
+      res[key] = obj[key];
+    }
+  }
+  return res;
+};
+
 
 /***/ })
 /******/ ]);
