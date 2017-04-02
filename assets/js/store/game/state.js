@@ -1,7 +1,6 @@
 'use strict';
 
 export default {
-    nick: null,
     game: null,
     players: [],
     settings: {

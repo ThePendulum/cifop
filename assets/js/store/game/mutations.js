@@ -3,9 +3,6 @@
 import pick from 'object.pick';
 
 export default {
-    nick(state, nick) {
-        state.nick = nick;
-    },
     game(state, game) {
         state.game = game;
     },

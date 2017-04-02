@@ -1,8 +1,8 @@
 'use strict';
 
 const util = require('util');
-
 const note = require('note-log');
+const pick = require('object.pick');
 
 const Player = require('./player.js');
 
@@ -51,7 +51,7 @@ module.exports = function(wss) {
             note('hub', 0, `'${player.nick}' ('${ws.ip}', '${player.id}') disconnected`);
         });
 
-        player.transmit('nick', player.nick);
+        player.transmit('player', pick(player, ['id', 'nick']));
 
         const ping = function() {
             player.transmit('ping');

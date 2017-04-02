@@ -10,7 +10,8 @@ module.exports = function (session, events) {
         id: session.id || uuid(),
         nick: namegen(),
         games: session.games || [],
-        gameId: null
+        gameId: null,
+        host: false
     };
 
     player.join = function (gameId) {

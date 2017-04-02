@@ -156,9 +156,8 @@
 
     .chat {
         display: flex;
-        flex-grow: 1;
         flex-direction: column;
-        height: 50%;
+        height: 20rem;
         border-top: solid 1px $crease;
 
         .input {

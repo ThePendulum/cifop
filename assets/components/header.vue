@@ -23,7 +23,7 @@
         computed: {
             ...mapState({
                 nick(state) {
-                    return state.game.nick;
+                    return state.player.nick;
                 }
             })
         },

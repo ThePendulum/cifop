@@ -20,14 +20,10 @@ module.exports = function(Game) {
 
                 if(!game.host) {
                     game.host = player.id;
+                    player.host = true;
                 }
 
-                Game.broadcast(gameId, 'players', Array.from(game.players).map(player => {
-                    player.host = player.id === game.host;
-
-                    return pick(player, ['id', 'nick', 'host']);
-                }));
-
+                Game.broadcast(player.gameId, 'players', Array.from(game.players).map(player => pick(player, ['id', 'nick', 'host'])));
                 Game.broadcast(gameId, 'settings', game.settings);
 
                 Game.broadcast(gameId, 'message', {

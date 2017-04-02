@@ -12561,8 +12561,9 @@ ws.addEventListener('message', function (message) {
         status: function status(msg) {
             _store2.default.commit('addMessage', msg);
         },
-        nick: function nick(_nick) {
-            _store2.default.commit('nick', _nick);
+        player: function player(_player) {
+            _store2.default.commit('id', _player.id);
+            _store2.default.commit('nick', _player.nick);
         },
         players: function players(_players) {
             _store2.default.commit('setPlayers', _players);
@@ -15194,6 +15195,10 @@ var _game = __webpack_require__(211);
 
 var _game2 = _interopRequireDefault(_game);
 
+var _player = __webpack_require__(611);
+
+var _player2 = _interopRequireDefault(_player);
+
 var _chat = __webpack_require__(204);
 
 var _chat2 = _interopRequireDefault(_chat);
@@ -15205,6 +15210,7 @@ _vue2.default.use(_vuex2.default);
 exports.default = new _vuex2.default.Store({
     modules: {
         game: _game2.default,
+        player: _player2.default,
         chat: _chat2.default
     }
 });
@@ -17928,7 +17934,7 @@ exports.default = {
 
     computed: _extends({}, (0, _vuex.mapState)({
         nick: function nick(state) {
-            return state.game.nick;
+            return state.player.nick;
         }
     })),
     watch: {
@@ -18188,6 +18194,10 @@ var _state = __webpack_require__(213);
 
 var _state2 = _interopRequireDefault(_state);
 
+var _getters = __webpack_require__(610);
+
+var _getters2 = _interopRequireDefault(_getters);
+
 var _mutations = __webpack_require__(212);
 
 var _mutations2 = _interopRequireDefault(_mutations);
@@ -18200,6 +18210,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
     state: _state2.default,
+    getters: _getters2.default,
     mutations: _mutations2.default,
     actions: _actions2.default
 };
@@ -18222,9 +18233,6 @@ var _object2 = _interopRequireDefault(_object);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    nick: function nick(state, _nick) {
-        state.nick = _nick;
-    },
     game: function game(state, _game) {
         state.game = _game;
     },
@@ -18255,7 +18263,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    nick: null,
     game: null,
     players: [],
     settings: {
@@ -41967,7 +41974,7 @@ exports = module.exports = __webpack_require__(53)();
 
 
 // module
-exports.push([module.i, "\n.room {\n  display: flex;\n  flex-grow: 1;\n}\n.game {\n  flex-grow: 1;\n}\n.game-content {\n  padding: .5rem;\n}\n.sidebar {\n  display: flex;\n  flex-direction: column;\n  width: 20rem;\n  box-sizing: border-box;\n  border-right: solid 1px rgba(0, 0, 0, 0.2);\n}\n.players {\n  flex-grow: 1;\n  list-style: none;\n  padding: .5rem;\n  margin: 0;\n  line-height: 1.5;\n  overflow-y: auto;\n}\n.chat {\n  display: flex;\n  flex-grow: 1;\n  flex-direction: column;\n  height: 50%;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  flex-grow: 1;\n  list-style: none;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.room {\n  display: flex;\n  flex-grow: 1;\n}\n.game {\n  flex-grow: 1;\n}\n.game-content {\n  padding: .5rem;\n}\n.sidebar {\n  display: flex;\n  flex-direction: column;\n  width: 20rem;\n  box-sizing: border-box;\n  border-right: solid 1px rgba(0, 0, 0, 0.2);\n}\n.players {\n  flex-grow: 1;\n  list-style: none;\n  padding: .5rem;\n  margin: 0;\n  line-height: 1.5;\n  overflow-y: auto;\n}\n.chat {\n  display: flex;\n  flex-direction: column;\n  height: 20rem;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  flex-grow: 1;\n  list-style: none;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
 
 // exports
 
@@ -42158,13 +42165,21 @@ exports.default = {
         score: function score(state) {
             return state.game.settings.score;
         }
-    })),
+    }), {
+        host: function host() {
+            return this.$store.getters.host === this.$store.state.player.id;
+        }
+    }),
     methods: {
         set: function set(target, event) {
-            this.$store.dispatch('settings', _defineProperty({}, target, Number(event.target.value)));
+            if (this.host) {
+                this.$store.dispatch('settings', _defineProperty({}, target, Number(event.target.value)));
+            }
         },
         shift: function shift(target, event) {
-            this.$store.dispatch('settings', _defineProperty({}, target, Math.min(20, Math.max(3, this[target] + (event.deltaY < 0 ? 1 : -1)))));
+            if (this.host) {
+                this.$store.dispatch('settings', _defineProperty({}, target, Math.min(20, Math.max(3, this[target] + (event.deltaY < 0 ? 1 : -1)))));
+            }
         }
     }
 };
@@ -42178,7 +42193,7 @@ exports = module.exports = __webpack_require__(53)();
 
 
 // module
-exports.push([module.i, "\n.settings-setting {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n", ""]);
+exports.push([module.i, "\n.settings-setting {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n", ""]);
 
 // exports
 
@@ -42235,7 +42250,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "number",
       "min": "3",
-      "max": "20"
+      "max": "20",
+      "disabled": !_vm.host
     },
     domProps: {
       "value": _vm.players
@@ -42255,7 +42271,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "number",
       "min": "2",
-      "max": "20"
+      "max": "20",
+      "disabled": !_vm.host
     },
     domProps: {
       "value": _vm.score
@@ -42346,7 +42363,7 @@ exports.default = {
             return state.game.game;
         },
         nick: function nick(state) {
-            return state.game.nick;
+            return state.player.nick;
         }
     }))
 };
@@ -42537,6 +42554,86 @@ var _socket2 = _interopRequireDefault(_socket);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 ;
+
+/***/ }),
+/* 610 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    host: function host(state) {
+        var host = state.players.find(function (player) {
+            return player.host;
+        });
+
+        return host ? host.id : null;
+    }
+};
+
+/***/ }),
+/* 611 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _state = __webpack_require__(613);
+
+var _state2 = _interopRequireDefault(_state);
+
+var _mutations = __webpack_require__(612);
+
+var _mutations2 = _interopRequireDefault(_mutations);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    state: _state2.default,
+    mutations: _mutations2.default
+};
+
+/***/ }),
+/* 612 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    id: function id(state, _id) {
+        state.id = _id;
+    },
+    nick: function nick(state, _nick) {
+        state.nick = _nick;
+    }
+};
+
+/***/ }),
+/* 613 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    id: null,
+    nick: null
+};
 
 /***/ })
 /******/ ]);

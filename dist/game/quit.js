@@ -8,17 +8,26 @@ module.exports = function (Game) {
     return function (player) {
         var game = Game.games.get(player.gameId);
 
-        note('quit', 0, util.inspect(player));
-
         if (game) {
             player.quit();
             game.players.delete(player);
 
-            Game.broadcast(player.gameId, 'players', Array.from(game.players).map(function (player) {
-                return pick(player, ['id', 'nick']);
+            if (game.host === player.id) {
+                var nextPlayer = game.players.values().next().value;
+
+                if (nextPlayer) {
+                    game.host = nextPlayer.id;
+                    nextPlayer.host = true;
+                } else {
+                    game.host = null;
+                }
+            }
+
+            Game.broadcast(game.id, 'players', Array.from(game.players).map(function (player) {
+                return pick(player, ['id', 'nick', 'host']);
             }));
 
-            Game.broadcast(player.gameId, 'message', {
+            Game.broadcast(game.id, 'message', {
                 type: 'status',
                 text: player.nick + ' has left the game',
                 date: new Date()

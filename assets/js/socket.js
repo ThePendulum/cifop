@@ -25,8 +25,9 @@ ws.addEventListener('message', message => {
         status(msg) {
             store.commit('addMessage', msg);
         },
-        nick(nick) {
-            store.commit('nick', nick);
+        player(player) {
+            store.commit('id', player.id);
+            store.commit('nick', player.nick);
         },
         players(players) {
             store.commit('setPlayers', players);
