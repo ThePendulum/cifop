@@ -416,6 +416,11 @@ button:focus {
   transition: box-shadow .2s ease; }
   .input:focus {
     box-shadow: 0 2px 0 0 #2294ff; }
+  .input:disabled {
+    color: #aaa;
+    background: none;
+    box-shadow: none;
+    -moz-appearance: textfield; }
 
 body {
   color: #333;

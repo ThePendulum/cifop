@@ -16,9 +16,9 @@ module.exports = function (events) {
         if (game && game.players.has(player)) {
             player.throttleStack = player.throttleStack.concat(new Date().getTime()).slice(-5);
 
-            var text = msg.slice(0, 140);
+            var text = msg.trim().slice(0, 140);
 
-            if (player.throttleStack.length < 5 || player.throttleStack[4] - player.throttleStack[0] > 10000) {
+            if (text && player.throttleStack.length < 5 || player.throttleStack[4] - player.throttleStack[0] > 10000) {
                 Game.broadcast(game.id, 'message', {
                     text: text,
                     type: 'message',

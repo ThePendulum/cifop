@@ -41907,6 +41907,13 @@ var _markdown = new _markdownIt2.default({
     breaks: false
 });
 
+// open linkified links in new tab, https://github.com/markdown-it/markdown-it/issues/46#issuecomment-83852242
+_markdown.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+    tokens[idx].attrPush(['target', '_blank']);
+
+    return self.renderToken(tokens, idx, options);
+};
+
 exports.default = {
     components: {
         'vue-header': _header2.default,
@@ -41945,7 +41952,6 @@ exports.default = {
         },
         autocomplete: function autocomplete(event) {
             event.preventDefault();
-            console.log(event.target.value);
         },
         format: function format(date, _format) {
             return dateFns.format(date, _format);

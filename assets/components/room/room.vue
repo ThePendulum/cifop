@@ -63,6 +63,13 @@
         breaks: false
     });
 
+    // open linkified links in new tab, https://github.com/markdown-it/markdown-it/issues/46#issuecomment-83852242
+    markdown.renderer.rules.link_open = function(tokens, idx, options, env, self) {
+        tokens[idx].attrPush(['target', '_blank']);
+
+        return self.renderToken(tokens, idx, options);
+    };
+
     export default {
         components: {
             'vue-header': Header,
@@ -100,7 +107,6 @@
             },
             autocomplete(event) {
                 event.preventDefault();
-                console.log(event.target.value);
             },
             format(date, format) {
                 return dateFns.format(date, format);
