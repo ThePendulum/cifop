@@ -1,28 +1,21 @@
 <template>
     <div class="container">
-        <vue-header v-if="header" />
-
-        <div class="content">
-            <router-view />
-        </div>
+        <router-view />
     </div>
 </template>
 
 <script>
     import Header from './header.vue';
+    import RoomHeader from './room/header.vue';
 
     export default {
         components: {
-            'vue-header': Header
+            'vue-header': Header,
+            'vue-room-header': RoomHeader
         },
-        data() {
-            return {
-                header: this.$route.meta.header !== false
-            };
-        },
-        watch: {
-            '$route': function(to, from) {
-                this.header = to.meta.header !== false;
+        computed: {
+            header() {
+                return this.$route.meta.header;
             }
         }
     };
@@ -37,8 +30,8 @@
 
     .content {
         display: flex;
-        flex-direction: column;
         flex-grow: 1;
+        flex-direction: column;
         overflow-y: auto;
     }
 </style>

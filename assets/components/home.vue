@@ -1,11 +1,20 @@
 <template>
-    <div class="home">
-        <button v-if="!redirecting" class="newgame" @click="createGame">New game</button>
+    <div class="content">
+        <vue-header />
+
+        <div class="home">
+            <button v-if="!redirecting" class="newgame" @click="createGame">New game</button>
+        </div>
     </div>
 </template>
 
 <script>
+    import Header from './header.vue';
+
     export default {
+        components: {
+            'vue-header': Header
+        },
         data() {
             return {
                 redirecting: false

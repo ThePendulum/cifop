@@ -1,8 +1,8 @@
 'use strict';
 
-import createGame from './createGame.js';
-import joinGame from './joinGame.js';
-import leaveGame from './leaveGame.js';
+import createGame from './create.js';
+import joinGame from './join.js';
+import leaveGame from './leave.js';
 import settings from './settings.js';
 
 export default {

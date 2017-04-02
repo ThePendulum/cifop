@@ -56,6 +56,8 @@ module.exports = function (wss) {
             note('hub', 0, '\'' + player.nick + '\' (\'' + ws.ip + '\', \'' + player.id + '\') disconnected');
         });
 
+        player.transmit('nick', player.nick);
+
         var ping = function ping() {
             player.transmit('ping');
 

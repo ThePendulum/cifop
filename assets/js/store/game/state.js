@@ -2,6 +2,7 @@
 
 export default {
     nick: null,
+    game: null,
     players: [],
     settings: {
         players: 8,

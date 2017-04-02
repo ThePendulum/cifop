@@ -6,18 +6,21 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 import Home from '../components/home.vue';
-import Room from '../components/room.vue';
+import Room from '../components/room/room.vue';
 
 const routes = [{
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
+    meta: {
+        header: 'main'
+    }
 }, {
     path: '/room/:id',
     name: 'room',
     component: Room,
     meta: {
-        header: false
+        header: 'room'
     }
 }];
 

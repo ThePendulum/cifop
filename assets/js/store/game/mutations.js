@@ -6,6 +6,9 @@ export default {
     nick(state, nick) {
         state.nick = nick;
     },
+    game(state, game) {
+        state.game = game;
+    },
     setPlayers(state, players) {
         state.players = players;
     },

@@ -1,8 +1,6 @@
 <template>
-    <div class="header">
+    <div class="header header-body">
         <router-link :to="{name: 'home'}" class="logo"><vue-svg icon="logo" label="Cards in Favor of Profanity" /></router-link>
-
-        <h1 v-if="room" class="header-room">{{room}}</h1>
 
         <div class="user">{{nick}}</div>
     </div>
@@ -48,13 +46,13 @@
         display: flex;
         justify-content: space-between;
         box-sizing: border-box;
-        padding: .5rem 1rem;
-        border-bottom: solid 1px $shadow;
+        color: $text-light;
+        background: $primary;
+        box-shadow: 0 0 3px $shadow;
     }
 
-    .header-room {
-        display: inline-block;
-        margin: 0;
+    .header-body {
+        padding: .5rem 1rem;
     }
 
     .logo {

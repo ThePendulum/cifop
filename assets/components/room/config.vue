@@ -1,7 +1,7 @@
 <template>
-    <div class="game-content">
-        <label>Players <input type="number" min="3" max="20" :value="players" @input="set('players', $event)" @wheel="shift('players', $event)"></label>
-        <label>Score <input type="number" min="2" max="20" :value="score" @input="set('score', $event)" @wheel="shift('score', $event)"></label>
+    <div class="game-content settings">
+        <label class="settings-setting">Players <input type="number" min="3" max="20" :value="players" class="input" @input="set('players', $event)" @wheel="shift('players', $event)"></label>
+        <label class="settings-setting">Score <input type="number" min="2" max="20" :value="score" class="input" @input="set('score', $event)" @wheel="shift('score', $event)"></label>
     </div>
 </template>
 
@@ -23,9 +23,18 @@
             },
             shift(target, event) {
                 this.$store.dispatch('settings', {
+                    // increase or decrease value based on scroll direction
                     [target]: Math.min(20, Math.max(3, this[target] + (event.deltaY < 0 ? 1 : -1)))
                 });
             }
         }
     };
 </script>
+
+<style lang="sass">
+    .settings-setting {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>

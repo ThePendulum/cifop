@@ -17709,7 +17709,7 @@ var _home = __webpack_require__(567);
 
 var _home2 = _interopRequireDefault(_home);
 
-var _room = __webpack_require__(568);
+var _room = __webpack_require__(594);
 
 var _room2 = _interopRequireDefault(_room);
 
@@ -17720,13 +17720,16 @@ _vue2.default.use(_vueRouter2.default);
 var routes = [{
     path: '/',
     name: 'home',
-    component: _home2.default
+    component: _home2.default,
+    meta: {
+        header: 'main'
+    }
 }, {
     path: '/room/:id',
     name: 'room',
     component: _room2.default,
     meta: {
-        header: false
+        header: 'room'
     }
 }];
 
@@ -17860,33 +17863,30 @@ var _header = __webpack_require__(566);
 
 var _header2 = _interopRequireDefault(_header);
 
+var _header3 = __webpack_require__(604);
+
+var _header4 = _interopRequireDefault(_header3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
 
 exports.default = {
     components: {
-        'vue-header': _header2.default
+        'vue-header': _header2.default,
+        'vue-room-header': _header4.default
     },
-    data: function data() {
-        return {
-            header: this.$route.meta.header !== false
-        };
-    },
-
-    watch: {
-        '$route': function $route(to, from) {
-            this.header = to.meta.header !== false;
+    computed: {
+        header: function header() {
+            return this.$route.meta.header;
         }
     }
-}; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
+};
 
 /***/ }),
 /* 198 */
@@ -17900,8 +17900,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
-//
-//
 //
 //
 //
@@ -17954,14 +17952,17 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-//
-//
-//
-//
-//
-//
+
+var _header = __webpack_require__(566);
+
+var _header2 = _interopRequireDefault(_header);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
+    components: {
+        'vue-header': _header2.default
+    },
     data: function data() {
         return {
             redirecting: false
@@ -17984,165 +17985,19 @@ exports.default = {
             });
         }
     }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
-/* 200 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-var _vue = __webpack_require__(61);
-
-var _vue2 = _interopRequireDefault(_vue);
-
-var _vuex = __webpack_require__(118);
-
-var _dateFns = __webpack_require__(441);
-
-var dateFns = _interopRequireWildcard(_dateFns);
-
-var _svg = __webpack_require__(569);
-
-var _svg2 = _interopRequireDefault(_svg);
-
-var _config = __webpack_require__(584);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _markdownIt = __webpack_require__(510);
-
-var _markdownIt2 = _interopRequireDefault(_markdownIt);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _markdown = new _markdownIt2.default({
-    html: false,
-    linkify: true,
-    breaks: false
-});
-
-exports.default = {
-    components: {
-        'vue-svg': _svg2.default,
-        'vue-config': _config2.default
-    },
-    data: function data() {
-        return {
-            id: this.$route.params.id,
-            message: null,
-            view: 'config'
-        };
-    },
-
-    computed: _extends({}, (0, _vuex.mapState)({
-        chat: function chat(state) {
-            var _this = this;
-
-            if (this.$refs.chat) {
-                _vue2.default.nextTick(function () {
-                    _this.$refs.chat.scrollTop = _this.$refs.chat.scrollHeight;
-                });
-            }
-
-            return state.chat.messages;
-        },
-        players: function players(state) {
-            return state.game.players;
-        }
-    })),
-    methods: {
-        sendMessage: function sendMessage(event) {
-            this.$store.dispatch('sendMessage', {
-                room: this.id,
-                text: this.message
-            });
-
-            this.message = null;
-        },
-        autocomplete: function autocomplete(event) {
-            event.preventDefault();
-            console.log(event.target.value);
-        },
-        format: function format(date, _format) {
-            return dateFns.format(date, _format);
-        },
-        markdown: function markdown(text) {
-            return _markdown.renderInline(text);
-        }
-    },
-    mounted: function mounted() {
-        this.$store.dispatch('joinGame', this.id);
-    },
-    destroyed: function destroyed() {
-        this.$store.commit('clearChat');
-        this.$store.commit('clearPlayers');
-
-        this.$store.dispatch('leaveGame');
-    }
-};
-
-/***/ }),
+/* 200 */,
 /* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18280,31 +18135,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 207 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-exports.default = function (context) {
-    return fetch(window.location.origin + '/api/game', {
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'same-origin'
-    }).then(function (res) {
-        return res.text();
-    }).catch(function (error) {
-        console.log(error);
-    });
-};
-
-;
-
-/***/ }),
+/* 207 */,
 /* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18315,17 +18146,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createGame = __webpack_require__(207);
+var _create = __webpack_require__(607);
 
-var _createGame2 = _interopRequireDefault(_createGame);
+var _create2 = _interopRequireDefault(_create);
 
-var _joinGame = __webpack_require__(209);
+var _join = __webpack_require__(608);
 
-var _joinGame2 = _interopRequireDefault(_joinGame);
+var _join2 = _interopRequireDefault(_join);
 
-var _leaveGame = __webpack_require__(210);
+var _leave = __webpack_require__(609);
 
-var _leaveGame2 = _interopRequireDefault(_leaveGame);
+var _leave2 = _interopRequireDefault(_leave);
 
 var _settings = __webpack_require__(587);
 
@@ -18334,59 +18165,15 @@ var _settings2 = _interopRequireDefault(_settings);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    createGame: _createGame2.default,
-    joinGame: _joinGame2.default,
-    leaveGame: _leaveGame2.default,
+    createGame: _create2.default,
+    joinGame: _join2.default,
+    leaveGame: _leave2.default,
     settings: _settings2.default
 };
 
 /***/ }),
-/* 209 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-exports.default = function (context, gameId) {
-    _socket2.default.transmit('join', gameId);
-};
-
-var _socket = __webpack_require__(78);
-
-var _socket2 = _interopRequireDefault(_socket);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-;
-
-/***/ }),
-/* 210 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-exports.default = function (context) {
-    _socket2.default.transmit('leave');
-};
-
-var _socket = __webpack_require__(78);
-
-var _socket2 = _interopRequireDefault(_socket);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-;
-
-/***/ }),
+/* 209 */,
+/* 210 */,
 /* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18438,6 +18225,9 @@ exports.default = {
     nick: function nick(state, _nick) {
         state.nick = _nick;
     },
+    game: function game(state, _game) {
+        state.game = _game;
+    },
     setPlayers: function setPlayers(state, players) {
         state.players = players;
     },
@@ -18466,6 +18256,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     nick: null,
+    game: null,
     players: [],
     settings: {
         players: 8,
@@ -24510,7 +24301,7 @@ exports = module.exports = __webpack_require__(53)();
 
 
 // module
-exports.push([module.i, "\n.header {\n  display: flex;\n  justify-content: space-between;\n  box-sizing: border-box;\n  padding: .5rem 1rem;\n  border-bottom: solid 1px rgba(0, 0, 0, 0.2);\n}\n.header-room {\n  display: inline-block;\n  margin: 0;\n}\n.logo {\n  display: inline-block;\n}\n.logo .icon {\n    width: 4rem;\n}\n.user {\n  font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.header {\n  display: flex;\n  justify-content: space-between;\n  box-sizing: border-box;\n  color: #fff;\n  background: #2294ff;\n  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);\n}\n.header-body {\n  padding: .5rem 1rem;\n}\n.logo {\n  display: inline-block;\n}\n.logo .icon {\n    width: 4rem;\n}\n.user {\n  font-weight: bold;\n}\n", ""]);
 
 // exports
 
@@ -24530,20 +24321,7 @@ exports.push([module.i, "\n.home {\n  display: flex;\n  flex-direction: column;\
 
 
 /***/ }),
-/* 400 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(53)();
-// imports
-
-
-// module
-exports.push([module.i, "\n.room {\n  display: flex;\n  flex-grow: 1;\n}\n.game {\n  flex-grow: 1;\n}\n.game-content {\n  padding: .5rem;\n}\n.sidebar {\n  display: flex;\n  flex-direction: column;\n  border-right: solid 1px rgba(0, 0, 0, 0.2);\n}\n.game-header,\n.sidebar-header {\n  display: flex;\n  align-items: center;\n  height: 4rem;\n  padding: 0 .5rem;\n  border-bottom: solid 1px rgba(0, 0, 0, 0.2);\n}\n.sidebar-room {\n  margin: 0 0 0 .5rem;\n}\n.players {\n  flex-grow: 1;\n  list-style: none;\n  padding: .5rem;\n  margin: 0;\n  line-height: 1.5;\n  overflow-y: auto;\n}\n.chat {\n  display: flex;\n  flex-direction: column;\n  width: 20rem;\n  height: 50%;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  flex-grow: 1;\n  list-style: none;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 400 */,
 /* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24552,7 +24330,7 @@ exports = module.exports = __webpack_require__(53)();
 
 
 // module
-exports.push([module.i, "\n.container {\n  display: flex;\n  flex-direction: column;\n  height: 100vh;\n}\n.content {\n  display: flex;\n  flex-direction: column;\n  flex-grow: 1;\n  overflow-y: auto;\n}\n", ""]);
+exports.push([module.i, "\n.container {\n  display: flex;\n  flex-direction: column;\n  height: 100vh;\n}\n.content {\n  display: flex;\n  flex-grow: 1;\n  flex-direction: column;\n  overflow-y: auto;\n}\n", ""]);
 
 // exports
 
@@ -39302,44 +39080,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 568 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/* styles */
-__webpack_require__(579)
-
-var Component = __webpack_require__(58)(
-  /* script */
-  __webpack_require__(200),
-  /* template */
-  __webpack_require__(573),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/niels/projects/cifop/assets/components/room.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] room.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4fd00064", Component.options)
-  } else {
-    hotAPI.reload("data-v-4fd00064", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 568 */,
 /* 569 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -39411,7 +39152,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "header"
+    staticClass: "header header-body"
   }, [_c('router-link', {
     staticClass: "logo",
     attrs: {
@@ -39424,9 +39165,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "icon": "logo",
       "label": "Cards in Favor of Profanity"
     }
-  })], 1), _vm._v(" "), (_vm.room) ? _c('h1', {
-    staticClass: "header-room"
-  }, [_vm._v(_vm._s(_vm.room))]) : _vm._e(), _vm._v(" "), _c('div', {
+  })], 1), _vm._v(" "), _c('div', {
     staticClass: "user"
   }, [_vm._v(_vm._s(_vm.nick))])], 1)
 },staticRenderFns: []}
@@ -39444,13 +39183,15 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
+    staticClass: "content"
+  }, [_c('vue-header'), _vm._v(" "), _c('div', {
     staticClass: "home"
   }, [(!_vm.redirecting) ? _c('button', {
     staticClass: "newgame",
     on: {
       "click": _vm.createGame
     }
-  }, [_vm._v("New game")]) : _vm._e()])
+  }, [_vm._v("New game")]) : _vm._e()])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -39461,122 +39202,14 @@ if (false) {
 }
 
 /***/ }),
-/* 573 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "content-inner room"
-  }, [_c('div', {
-    staticClass: "sidebar"
-  }, [_c('div', {
-    staticClass: "sidebar-header"
-  }, [_c('router-link', {
-    staticClass: "logo",
-    attrs: {
-      "to": {
-        name: 'home'
-      }
-    }
-  }, [_c('vue-svg', {
-    attrs: {
-      "icon": "logo",
-      "label": "Cards in Favor of Profanity"
-    }
-  })], 1), _vm._v(" "), _c('h2', {
-    staticClass: "sidebar-room"
-  }, [_vm._v(_vm._s(_vm.id))])], 1), _vm._v(" "), _c('ul', {
-    staticClass: "players"
-  }, _vm._l((_vm.players), function(player) {
-    return _c('li', {
-      staticClass: "player"
-    }, [_vm._v(_vm._s(player.nick))])
-  })), _vm._v(" "), _c('div', {
-    staticClass: "chat"
-  }, [_c('ul', {
-    ref: "chat",
-    staticClass: "chat-messages"
-  }, _vm._l((_vm.chat), function(message, index) {
-    return _c('li', {
-      staticClass: "message"
-    }, [(message.type === 'message') ? _c('div', [(_vm.chat[index - 1] ? _vm.chat[index - 1].nick !== message.nick : true) ? _c('div', {
-      staticClass: "message-header"
-    }, [_c('span', {
-      staticClass: "message-nick"
-    }, [_vm._v(_vm._s(message.nick))]), _vm._v(" "), _c('span', {
-      staticClass: "message-date"
-    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])]) : _vm._e(), _vm._v(" "), _c('span', {
-      staticClass: "message-text",
-      domProps: {
-        "innerHTML": _vm._s(_vm.markdown(message.text))
-      }
-    })]) : _vm._e(), _vm._v(" "), (message.type === 'status') ? _c('div', [_c('div', {
-      staticClass: "message-header"
-    }, [_c('span', {
-      staticClass: "message-status"
-    }, [_vm._v(_vm._s(message.text))]), _vm._v(" "), _c('span', {
-      staticClass: "message-date"
-    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])])]) : _vm._e(), _vm._v(" "), (message.type === 'error') ? _c('div', [_c('div', {
-      staticClass: "message-header"
-    }, [_c('span', {
-      staticClass: "message-error"
-    }, [_vm._v(_vm._s(message.text))]), _vm._v(" "), _c('span', {
-      staticClass: "message-date"
-    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])])]) : _vm._e()])
-  })), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.message),
-      expression: "message"
-    }],
-    staticClass: "input",
-    attrs: {
-      "type": "text",
-      "maxlength": "140",
-      "placeholder": "Chat"
-    },
-    domProps: {
-      "value": (_vm.message)
-    },
-    on: {
-      "keypress": function($event) {
-        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
-        _vm.sendMessage($event)
-      },
-      "keydown": function($event) {
-        if (!('button' in $event) && _vm._k($event.keyCode, "tab", 9)) { return null; }
-        _vm.autocomplete($event)
-      },
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.message = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "game"
-  }, [_c('div', {
-    staticClass: "game-header"
-  }), _vm._v(" "), (_vm.view === 'config') ? _c('vue-config') : _vm._e()], 1)])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-4fd00064", module.exports)
-  }
-}
-
-/***/ }),
+/* 573 */,
 /* 574 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "container"
-  }, [(_vm.header) ? _c('vue-header') : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "content"
-  }, [_c('router-view')], 1)], 1)
+  }, [_c('router-view')], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -41951,32 +41584,7 @@ if(false) {
 }
 
 /***/ }),
-/* 579 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(400);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(59)("7fff0057", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-4fd00064\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./room.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-4fd00064\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./room.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 579 */,
 /* 580 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42104,133 +41712,9 @@ new _vue2.default({
 });
 
 /***/ }),
-/* 584 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(58)(
-  /* script */
-  __webpack_require__(586),
-  /* template */
-  __webpack_require__(585),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/niels/projects/cifop/assets/components/config.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] config.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-55dcc1ea", Component.options)
-  } else {
-    hotAPI.reload("data-v-55dcc1ea", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 585 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "game-content"
-  }, [_c('label', [_vm._v("Players "), _c('input', {
-    attrs: {
-      "type": "number",
-      "min": "3",
-      "max": "20"
-    },
-    domProps: {
-      "value": _vm.players
-    },
-    on: {
-      "input": function($event) {
-        _vm.set('players', $event)
-      },
-      "wheel": function($event) {
-        _vm.shift('players', $event)
-      }
-    }
-  })]), _vm._v(" "), _c('label', [_vm._v("Score "), _c('input', {
-    attrs: {
-      "type": "number",
-      "min": "2",
-      "max": "20"
-    },
-    domProps: {
-      "value": _vm.score
-    },
-    on: {
-      "input": function($event) {
-        _vm.set('score', $event)
-      },
-      "wheel": function($event) {
-        _vm.shift('score', $event)
-      }
-    }
-  })])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-55dcc1ea", module.exports)
-  }
-}
-
-/***/ }),
-/* 586 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
-//
-//
-//
-//
-//
-//
-
-var _vuex = __webpack_require__(118);
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-exports.default = {
-    computed: _extends({}, (0, _vuex.mapState)({
-        players: function players(state) {
-            return state.game.settings.players;
-        },
-        score: function score(state) {
-            return state.game.settings.score;
-        }
-    })),
-    methods: {
-        set: function set(target, event) {
-            this.$store.dispatch('settings', _defineProperty({}, target, Number(event.target.value)));
-        },
-        shift: function shift(target, event) {
-            this.$store.dispatch('settings', _defineProperty({}, target, Math.min(20, Math.max(3, this[target] + (event.deltaY < 0 ? 1 : -1)))));
-        }
-    }
-};
-
-/***/ }),
+/* 584 */,
+/* 585 */,
+/* 586 */,
 /* 587 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42316,6 +41800,746 @@ module.exports = function pick(obj, keys) {
   return res;
 };
 
+
+/***/ }),
+/* 590 */,
+/* 591 */,
+/* 592 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _vue = __webpack_require__(61);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _vuex = __webpack_require__(118);
+
+var _dateFns = __webpack_require__(441);
+
+var dateFns = _interopRequireWildcard(_dateFns);
+
+var _header = __webpack_require__(604);
+
+var _header2 = _interopRequireDefault(_header);
+
+var _svg = __webpack_require__(569);
+
+var _svg2 = _interopRequireDefault(_svg);
+
+var _config = __webpack_require__(599);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _markdownIt = __webpack_require__(510);
+
+var _markdownIt2 = _interopRequireDefault(_markdownIt);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _markdown = new _markdownIt2.default({
+    html: false,
+    linkify: true,
+    breaks: false
+});
+
+exports.default = {
+    components: {
+        'vue-header': _header2.default,
+        'vue-svg': _svg2.default,
+        'vue-config': _config2.default
+    },
+    data: function data() {
+        return {
+            id: this.$route.params.id,
+            message: null,
+            view: 'config'
+        };
+    },
+
+    computed: _extends({}, (0, _vuex.mapState)({
+        chat: function chat(state) {
+            var _this = this;
+
+            if (this.$refs.chat) {
+                _vue2.default.nextTick(function () {
+                    _this.$refs.chat.scrollTop = _this.$refs.chat.scrollHeight;
+                });
+            }
+
+            return state.chat.messages;
+        },
+        players: function players(state) {
+            return state.game.players;
+        }
+    })),
+    methods: {
+        sendMessage: function sendMessage(event) {
+            this.$store.dispatch('sendMessage', {
+                room: this.id,
+                text: this.message
+            });
+
+            this.message = null;
+        },
+        autocomplete: function autocomplete(event) {
+            event.preventDefault();
+            console.log(event.target.value);
+        },
+        format: function format(date, _format) {
+            return dateFns.format(date, _format);
+        },
+        markdown: function markdown(text) {
+            return _markdown.renderInline(text);
+        }
+    },
+    mounted: function mounted() {
+        this.$store.dispatch('joinGame', this.id);
+    },
+    destroyed: function destroyed() {
+        this.$store.commit('clearChat');
+        this.$store.commit('clearPlayers');
+
+        this.$store.dispatch('leaveGame');
+    }
+};
+
+/***/ }),
+/* 593 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(53)();
+// imports
+
+
+// module
+exports.push([module.i, "\n.room {\n  display: flex;\n  flex-grow: 1;\n}\n.game {\n  flex-grow: 1;\n}\n.game-content {\n  padding: .5rem;\n}\n.sidebar {\n  display: flex;\n  flex-direction: column;\n  width: 20rem;\n  box-sizing: border-box;\n  border-right: solid 1px rgba(0, 0, 0, 0.2);\n}\n.players {\n  flex-grow: 1;\n  list-style: none;\n  padding: .5rem;\n  margin: 0;\n  line-height: 1.5;\n  overflow-y: auto;\n}\n.chat {\n  display: flex;\n  flex-grow: 1;\n  flex-direction: column;\n  height: 50%;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  flex-grow: 1;\n  list-style: none;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 594 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(596)
+
+var Component = __webpack_require__(58)(
+  /* script */
+  __webpack_require__(592),
+  /* template */
+  __webpack_require__(595),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/niels/projects/cifop/assets/components/room/room.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] room.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-e953be54", Component.options)
+  } else {
+    hotAPI.reload("data-v-e953be54", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 595 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "content"
+  }, [_c('vue-header'), _vm._v(" "), _c('div', {
+    staticClass: "room"
+  }, [_c('div', {
+    staticClass: "sidebar"
+  }, [_c('ul', {
+    staticClass: "players"
+  }, _vm._l((_vm.players), function(player) {
+    return _c('li', {
+      staticClass: "player"
+    }, [_vm._v(_vm._s(player.nick))])
+  })), _vm._v(" "), _c('div', {
+    staticClass: "chat"
+  }, [_c('ul', {
+    ref: "chat",
+    staticClass: "chat-messages"
+  }, _vm._l((_vm.chat), function(message, index) {
+    return _c('li', {
+      staticClass: "message"
+    }, [(message.type === 'message') ? _c('div', [(_vm.chat[index - 1] ? _vm.chat[index - 1].nick !== message.nick : true) ? _c('div', {
+      staticClass: "message-header"
+    }, [_c('span', {
+      staticClass: "message-nick"
+    }, [_vm._v(_vm._s(message.nick))]), _vm._v(" "), _c('span', {
+      staticClass: "message-date"
+    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])]) : _vm._e(), _vm._v(" "), _c('span', {
+      staticClass: "message-text",
+      domProps: {
+        "innerHTML": _vm._s(_vm.markdown(message.text))
+      }
+    })]) : _vm._e(), _vm._v(" "), (message.type === 'status') ? _c('div', [_c('div', {
+      staticClass: "message-header"
+    }, [_c('span', {
+      staticClass: "message-status"
+    }, [_vm._v(_vm._s(message.text))]), _vm._v(" "), _c('span', {
+      staticClass: "message-date"
+    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])])]) : _vm._e(), _vm._v(" "), (message.type === 'error') ? _c('div', [_c('div', {
+      staticClass: "message-header"
+    }, [_c('span', {
+      staticClass: "message-error"
+    }, [_vm._v(_vm._s(message.text))]), _vm._v(" "), _c('span', {
+      staticClass: "message-date"
+    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])])]) : _vm._e()])
+  })), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.message),
+      expression: "message"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "maxlength": "140",
+      "placeholder": "Chat"
+    },
+    domProps: {
+      "value": (_vm.message)
+    },
+    on: {
+      "keypress": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.sendMessage($event)
+      },
+      "keydown": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "tab", 9)) { return null; }
+        _vm.autocomplete($event)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.message = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "game"
+  }, [(_vm.view === 'config') ? _c('vue-config') : _vm._e()], 1)])], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-e953be54", module.exports)
+  }
+}
+
+/***/ }),
+/* 596 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(593);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(59)("f04ef9da", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-e953be54\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./room.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-e953be54\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./room.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 597 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
+//
+//
+//
+//
+//
+//
+
+var _vuex = __webpack_require__(118);
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+exports.default = {
+    computed: _extends({}, (0, _vuex.mapState)({
+        players: function players(state) {
+            return state.game.settings.players;
+        },
+        score: function score(state) {
+            return state.game.settings.score;
+        }
+    })),
+    methods: {
+        set: function set(target, event) {
+            this.$store.dispatch('settings', _defineProperty({}, target, Number(event.target.value)));
+        },
+        shift: function shift(target, event) {
+            this.$store.dispatch('settings', _defineProperty({}, target, Math.min(20, Math.max(3, this[target] + (event.deltaY < 0 ? 1 : -1)))));
+        }
+    }
+};
+
+/***/ }),
+/* 598 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(53)();
+// imports
+
+
+// module
+exports.push([module.i, "\n.settings-setting {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 599 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(601)
+
+var Component = __webpack_require__(58)(
+  /* script */
+  __webpack_require__(597),
+  /* template */
+  __webpack_require__(600),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/niels/projects/cifop/assets/components/room/config.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] config.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-47916afd", Component.options)
+  } else {
+    hotAPI.reload("data-v-47916afd", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 600 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "game-content settings"
+  }, [_c('label', {
+    staticClass: "settings-setting"
+  }, [_vm._v("Players "), _c('input', {
+    staticClass: "input",
+    attrs: {
+      "type": "number",
+      "min": "3",
+      "max": "20"
+    },
+    domProps: {
+      "value": _vm.players
+    },
+    on: {
+      "input": function($event) {
+        _vm.set('players', $event)
+      },
+      "wheel": function($event) {
+        _vm.shift('players', $event)
+      }
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "settings-setting"
+  }, [_vm._v("Score "), _c('input', {
+    staticClass: "input",
+    attrs: {
+      "type": "number",
+      "min": "2",
+      "max": "20"
+    },
+    domProps: {
+      "value": _vm.score
+    },
+    on: {
+      "input": function($event) {
+        _vm.set('score', $event)
+      },
+      "wheel": function($event) {
+        _vm.shift('score', $event)
+      }
+    }
+  })])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-47916afd", module.exports)
+  }
+}
+
+/***/ }),
+/* 601 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(598);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(59)("10983cfc", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-47916afd\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./config.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-47916afd\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./config.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 602 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _vuex = __webpack_require__(118);
+
+var _svg = __webpack_require__(569);
+
+var _svg2 = _interopRequireDefault(_svg);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    components: {
+        'vue-svg': _svg2.default
+    },
+    computed: _extends({}, (0, _vuex.mapState)({
+        game: function game(state) {
+            return state.game.game;
+        },
+        nick: function nick(state) {
+            return state.game.nick;
+        }
+    }))
+};
+
+/***/ }),
+/* 603 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(53)();
+// imports
+
+
+// module
+exports.push([module.i, "\n.header-sidebar {\n  width: 20rem;\n  display: flex;\n  align-items: center;\n  box-sizing: border-box;\n  padding: .5rem 1rem;\n  border-right: solid 1px rgba(0, 0, 0, 0.2);\n}\n.header-room {\n  display: inline-block;\n  margin: 0 0 0 1rem;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 604 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(606)
+
+var Component = __webpack_require__(58)(
+  /* script */
+  __webpack_require__(602),
+  /* template */
+  __webpack_require__(605),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/niels/projects/cifop/assets/components/room/header.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] header.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-e83fa670", Component.options)
+  } else {
+    hotAPI.reload("data-v-e83fa670", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 605 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "header-sidebar"
+  }, [_c('router-link', {
+    staticClass: "logo",
+    attrs: {
+      "to": {
+        name: 'home'
+      }
+    }
+  }, [_c('vue-svg', {
+    attrs: {
+      "icon": "logo",
+      "label": "Cards in Favor of Profanity"
+    }
+  })], 1), _vm._v(" "), _c('h2', {
+    staticClass: "header-room"
+  }, [_vm._v(_vm._s(_vm.game))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "header-body"
+  }, [_c('div', {
+    staticClass: "user"
+  }, [_vm._v(_vm._s(_vm.nick))])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-e83fa670", module.exports)
+  }
+}
+
+/***/ }),
+/* 606 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(603);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(59)("2457a601", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-e83fa670\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./header.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-e83fa670\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./header.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 607 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function (context) {
+    return fetch(window.location.origin + '/api/game', {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'same-origin'
+    }).then(function (res) {
+        return res.text();
+    }).catch(function (error) {
+        console.log(error);
+    });
+};
+
+;
+
+/***/ }),
+/* 608 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function (context, gameId) {
+    context.commit('game', gameId);
+    _socket2.default.transmit('join', gameId);
+};
+
+var _socket = __webpack_require__(78);
+
+var _socket2 = _interopRequireDefault(_socket);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+;
+
+/***/ }),
+/* 609 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function (context) {
+    _socket2.default.transmit('leave');
+};
+
+var _socket = __webpack_require__(78);
+
+var _socket2 = _interopRequireDefault(_socket);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+;
 
 /***/ })
 /******/ ]);

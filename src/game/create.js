@@ -11,7 +11,8 @@ module.exports = function(Game) {
             settings: {
                 players: 8,
                 score: 8
-            }
+            },
+            host: null
         };
 
         Game.games.set(game.id, game);
