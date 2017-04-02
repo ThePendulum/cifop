@@ -8,17 +8,26 @@ module.exports = function(Game) {
         const game = Game.games.get(gameId);
 
         if(game) {
-            if(game.players.has(player.id)) {
+            if(player.games.includes(game.id)) {
                 player.transmit('message', {
                     type: 'error',
                     text: 'Already in game',
                     date: new Date()
                 });
             } else {
-                player.gameId = gameId;
+                player.join(gameId);
                 game.players.add(player);
 
-                Game.broadcast(gameId, 'players', Array.from(game.players).map(player => pick(player, ['id', 'nick'])));
+                if(!game.host) {
+                    game.host = player.id;
+                }
+
+                Game.broadcast(gameId, 'players', Array.from(game.players).map(player => {
+                    player.host = player.id === game.host;
+
+                    return pick(player, ['id', 'nick', 'host']);
+                }));
+
                 Game.broadcast(gameId, 'settings', game.settings);
 
                 Game.broadcast(gameId, 'message', {

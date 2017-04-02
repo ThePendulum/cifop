@@ -5,19 +5,36 @@ const namegen = require('./namegen/namegen.js');
 
 const Game = require('./game');
 
-module.exports = function(id = uuid(), events) {
+module.exports = function(session, events) {
     const player = {
-        id,
-        nick: namegen()
+        id: session.id || uuid(),
+        nick: namegen(),
+        games: session.games || [],
+        gameId: null
     };
 
-    const changeNick = function(newNick) {
+    player.join = function(gameId) {
+        player.games = session.games = player.games.concat(gameId);
+        player.gameId = gameId;
+
+        session.save();
+    };
+
+    player.quit = function() {
+        player.games = session.games = player.games.filter(gameId => gameId !== player.gameId);
+        player.gameId = null;
+
+        session.save();
+    };
+
+    player.changeNick = function(newNick) {
         player.nick = newNick;
     };
 
-    events.on('nick', changeNick);
+    events.on('nick', player.changeNick);
+
     events.once('close', () => {
-        events.removeListener('nick', changeNick);
+        events.removeListener('nick', player.changeNick);
     });
 
     return player;

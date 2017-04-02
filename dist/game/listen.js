@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function (Game) {
-    var leave = function leave(data, player) {
+    var quit = function quit(data, player) {
         Game.quit(player);
     };
 
@@ -14,7 +14,7 @@ module.exports = function (Game) {
             Game.settings(player.gameId, settings);
         });
 
-        events.on('leave', leave);
-        events.on('close', leave);
+        events.on('leave', quit);
+        events.on('close', quit);
     };
 };

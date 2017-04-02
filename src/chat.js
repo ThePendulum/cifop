@@ -11,23 +11,27 @@ module.exports = function(events) {
     });
 
     events.on('message', (msg, player) => {
-        player.throttleStack = player.throttleStack.concat(new Date().getTime()).slice(-5);
+        const game = Game.games.get(player.gameId);
 
-        msg.text = msg.text.slice(0, 140);
+        if(game && game.players.has(player)) {
+            player.throttleStack = player.throttleStack.concat(new Date().getTime()).slice(-5);
 
-        if(player.throttleStack.length < 5 || player.throttleStack[4] - player.throttleStack[0] > 10000) {
-            Game.broadcast(msg.room, 'message', {
-                ...msg,
-                type: 'message',
-                nick: player.nick,
-                date: new Date()
-            });
-        } else {
-            player.transmit('message', {
-                type: 'error',
-                text: 'Please try to be less verbose!',
-                date: new Date()
-            });
+            const text = msg.slice(0, 140);
+
+            if(player.throttleStack.length < 5 || player.throttleStack[4] - player.throttleStack[0] > 10000) {
+                Game.broadcast(game.id, 'message', {
+                    text,
+                    type: 'message',
+                    nick: player.nick,
+                    date: new Date()
+                });
+            } else {
+                player.transmit('message', {
+                    type: 'error',
+                    text: 'Please try to be less verbose!',
+                    date: new Date()
+                });
+            }
         }
     });
 };

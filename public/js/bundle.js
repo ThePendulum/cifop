@@ -41932,10 +41932,7 @@ exports.default = {
     })),
     methods: {
         sendMessage: function sendMessage(event) {
-            this.$store.dispatch('sendMessage', {
-                room: this.id,
-                text: this.message
-            });
+            this.$store.dispatch('sendMessage', this.message);
 
             this.message = null;
         },

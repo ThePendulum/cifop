@@ -1,5 +1,6 @@
 'use strict';
 
+var util = require('util');
 var note = require('note-log');
 var pick = require('object.pick');
 
@@ -7,8 +8,10 @@ module.exports = function (Game) {
     return function (player) {
         var game = Game.games.get(player.gameId);
 
+        note('quit', 0, util.inspect(player));
+
         if (game) {
-            player.gameId = null;
+            player.quit();
             game.players.delete(player);
 
             Game.broadcast(player.gameId, 'players', Array.from(game.players).map(function (player) {
