@@ -5,7 +5,7 @@
         <div class="room">
             <div class="sidebar">
                 <ul class="players">
-                    <li v-for="player in players" class="player">{{player.nick}}</li>
+                    <li v-for="player in players" class="player" :class="{host: player.host}">{{player.nick}}</li>
                 </ul>
 
                 <div class="chat">
@@ -152,6 +152,12 @@
         margin: 0;
         line-height: 1.5;
         overflow-y: auto;
+    }
+
+    .player {
+        &.host {
+            font-weight: bold;
+        }
     }
 
     .chat {

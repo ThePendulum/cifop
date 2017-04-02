@@ -11,7 +11,7 @@ module.exports = function (Game) {
         });
 
         events.on('settings', function (settings, player) {
-            Game.settings(player.gameId, settings);
+            Game.settings(player.gameId, settings, player);
         });
 
         events.on('leave', quit);
