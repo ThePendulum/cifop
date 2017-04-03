@@ -24,3 +24,18 @@ button:focus {
         -moz-appearance: textfield;
     }
 }
+
+.button {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 1rem;
+    border: none;
+    border-radius: .5rem;
+    color: $text-light;
+    background: $secondary;
+    box-shadow: 0 .2rem 0 0 $secondary-shadow;
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 $secondary-light, -1px -1px 0 $secondary-shadow;
+    cursor: pointer;
+}

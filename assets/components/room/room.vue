@@ -8,40 +8,11 @@
                     <li v-for="player in players" class="player" :class="{host: player.host}">{{player.nick}}</li>
                 </ul>
 
-                <div class="chat">
-                    <ul class="chat-messages" ref="chat">
-                        <li v-for="(message, index) in chat" class="message">
-                            <div v-if="message.type === 'message'">
-                                <div class="message-header" v-if="chat[index - 1] ? chat[index - 1].nick !== message.nick : true">
-                                    <span class="message-nick">{{message.nick}}</span>
-                                    <span class="message-date">{{format(message.date, 'HH:mm')}}</span>
-                                </div>
-
-                                <span v-html="markdown(message.text)" class="message-text"></span>
-                            </div>
-
-                            <div v-if="message.type === 'status'">
-                                <div class="message-header">
-                                    <span class="message-status">{{message.text}}</span>
-                                    <span class="message-date">{{format(message.date, 'HH:mm')}}</span>
-                                </div>
-                            </div>
-
-                            <div v-if="message.type === 'error'">
-                                <div class="message-header">
-                                    <span class="message-error">{{message.text}}</span>
-                                    <span class="message-date">{{format(message.date, 'HH:mm')}}</span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <input type="text" v-model="message" maxlength="140" placeholder="Chat" class="input" @keypress.enter="sendMessage" @keydown.tab="autocomplete">
-                </div>
+                <vue-chat />
             </div>
 
             <div class="game">
-                <vue-config v-if="view === 'config'" />
+                <vue-settings v-if="view === 'config'" />
             </div>
         </div>
     </div>
@@ -50,31 +21,18 @@
 <script>
     import Vue from 'vue';
     import {mapState} from 'vuex';
-    import * as dateFns from 'date-fns';
 
-    import Header from './header.vue';
     import Svg from '../svg.vue';
-    import Config from './config.vue';
-
-    import MarkdownIt from 'markdown-it';
-    const markdown = new MarkdownIt({
-        html: false,
-        linkify: true,
-        breaks: false
-    });
-
-    // open linkified links in new tab, https://github.com/markdown-it/markdown-it/issues/46#issuecomment-83852242
-    markdown.renderer.rules.link_open = function(tokens, idx, options, env, self) {
-        tokens[idx].attrPush(['target', '_blank']);
-
-        return self.renderToken(tokens, idx, options);
-    };
+    import Header from './header.vue';
+    import Chat from './chat.vue';
+    import Settings from './settings.vue';
 
     export default {
         components: {
-            'vue-header': Header,
             'vue-svg': Svg,
-            'vue-config': Config
+            'vue-header': Header,
+            'vue-chat': Chat,
+            'vue-settings': Settings
         },
         data() {
             return {
@@ -99,29 +57,10 @@
                 }
             })
         },
-        methods: {
-            sendMessage(event) {
-                this.$store.dispatch('sendMessage', this.message);
-
-                this.message = null;
-            },
-            autocomplete(event) {
-                event.preventDefault();
-            },
-            format(date, format) {
-                return dateFns.format(date, format);
-            },
-            markdown(text) {
-                return markdown.renderInline(text);
-            }
-        },
         mounted() {
             this.$store.dispatch('joinGame', this.id);
         },
         destroyed() {
-            this.$store.commit('clearChat');
-            this.$store.commit('clearPlayers');
-
             this.$store.dispatch('leaveGame');
         }
     };

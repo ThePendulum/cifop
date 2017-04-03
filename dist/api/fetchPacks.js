@@ -1,9 +1,8 @@
 'use strict';
 
+var knex = require('../knex.js');
 var Game = require('../game');
 
 module.exports = function (req, res) {
-    return Game.create().then(function (gameId) {
-        res.send(gameId);
-    });
+    return knex('packs');
 };

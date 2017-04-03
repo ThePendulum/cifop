@@ -24322,7 +24322,7 @@ exports = module.exports = __webpack_require__(53)();
 
 
 // module
-exports.push([module.i, "\n.home {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  flex-grow: 1;\n}\n.home .copy {\n    font-size: 3rem;\n}\n.newgame {\n  display: inline-block;\n  box-sizing: border-box;\n  padding: 2rem;\n  border: none;\n  border-radius: 1rem;\n  color: #fff;\n  background: #ff5e10;\n  box-shadow: 0 0.5rem 0 0 #ce4300;\n  font-size: 2rem;\n  font-weight: bold;\n  text-decoration: none;\n  text-shadow: 1px 1px 0 #ff9d6f, -1px -1px 0 #ce4300;\n  cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.home {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  flex-grow: 1;\n}\n.home .copy {\n    font-size: 3rem;\n}\n.newgame {\n  display: inline-block;\n  box-sizing: border-box;\n  padding: 2rem;\n  border: none;\n  border-radius: 1rem;\n  color: #fff;\n  background: #ff5e10;\n  box-shadow: 0 0.5rem 0 0 #ce4300;\n  font-size: 2rem;\n  font-weight: bold;\n  text-shadow: 1px 1px 0 #ff9d6f, -1px -1px 0 #ce4300;\n  cursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -41841,35 +41841,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var _vue = __webpack_require__(61);
 
@@ -41877,48 +41848,30 @@ var _vue2 = _interopRequireDefault(_vue);
 
 var _vuex = __webpack_require__(118);
 
-var _dateFns = __webpack_require__(441);
+var _svg = __webpack_require__(569);
 
-var dateFns = _interopRequireWildcard(_dateFns);
+var _svg2 = _interopRequireDefault(_svg);
 
 var _header = __webpack_require__(604);
 
 var _header2 = _interopRequireDefault(_header);
 
-var _svg = __webpack_require__(569);
+var _chat = __webpack_require__(619);
 
-var _svg2 = _interopRequireDefault(_svg);
+var _chat2 = _interopRequireDefault(_chat);
 
-var _config = __webpack_require__(599);
+var _settings = __webpack_require__(616);
 
-var _config2 = _interopRequireDefault(_config);
-
-var _markdownIt = __webpack_require__(510);
-
-var _markdownIt2 = _interopRequireDefault(_markdownIt);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _settings2 = _interopRequireDefault(_settings);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _markdown = new _markdownIt2.default({
-    html: false,
-    linkify: true,
-    breaks: false
-});
-
-// open linkified links in new tab, https://github.com/markdown-it/markdown-it/issues/46#issuecomment-83852242
-_markdown.renderer.rules.link_open = function (tokens, idx, options, env, self) {
-    tokens[idx].attrPush(['target', '_blank']);
-
-    return self.renderToken(tokens, idx, options);
-};
-
 exports.default = {
     components: {
-        'vue-header': _header2.default,
         'vue-svg': _svg2.default,
-        'vue-config': _config2.default
+        'vue-header': _header2.default,
+        'vue-chat': _chat2.default,
+        'vue-settings': _settings2.default
     },
     data: function data() {
         return {
@@ -41944,29 +41897,10 @@ exports.default = {
             return state.game.players;
         }
     })),
-    methods: {
-        sendMessage: function sendMessage(event) {
-            this.$store.dispatch('sendMessage', this.message);
-
-            this.message = null;
-        },
-        autocomplete: function autocomplete(event) {
-            event.preventDefault();
-        },
-        format: function format(date, _format) {
-            return dateFns.format(date, _format);
-        },
-        markdown: function markdown(text) {
-            return _markdown.renderInline(text);
-        }
-    },
     mounted: function mounted() {
         this.$store.dispatch('joinGame', this.id);
     },
     destroyed: function destroyed() {
-        this.$store.commit('clearChat');
-        this.$store.commit('clearPlayers');
-
         this.$store.dispatch('leaveGame');
     }
 };
@@ -42043,71 +41977,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         host: player.host
       }
     }, [_vm._v(_vm._s(player.nick))])
-  })), _vm._v(" "), _c('div', {
-    staticClass: "chat"
-  }, [_c('ul', {
-    ref: "chat",
-    staticClass: "chat-messages"
-  }, _vm._l((_vm.chat), function(message, index) {
-    return _c('li', {
-      staticClass: "message"
-    }, [(message.type === 'message') ? _c('div', [(_vm.chat[index - 1] ? _vm.chat[index - 1].nick !== message.nick : true) ? _c('div', {
-      staticClass: "message-header"
-    }, [_c('span', {
-      staticClass: "message-nick"
-    }, [_vm._v(_vm._s(message.nick))]), _vm._v(" "), _c('span', {
-      staticClass: "message-date"
-    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])]) : _vm._e(), _vm._v(" "), _c('span', {
-      staticClass: "message-text",
-      domProps: {
-        "innerHTML": _vm._s(_vm.markdown(message.text))
-      }
-    })]) : _vm._e(), _vm._v(" "), (message.type === 'status') ? _c('div', [_c('div', {
-      staticClass: "message-header"
-    }, [_c('span', {
-      staticClass: "message-status"
-    }, [_vm._v(_vm._s(message.text))]), _vm._v(" "), _c('span', {
-      staticClass: "message-date"
-    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])])]) : _vm._e(), _vm._v(" "), (message.type === 'error') ? _c('div', [_c('div', {
-      staticClass: "message-header"
-    }, [_c('span', {
-      staticClass: "message-error"
-    }, [_vm._v(_vm._s(message.text))]), _vm._v(" "), _c('span', {
-      staticClass: "message-date"
-    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])])]) : _vm._e()])
-  })), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.message),
-      expression: "message"
-    }],
-    staticClass: "input",
-    attrs: {
-      "type": "text",
-      "maxlength": "140",
-      "placeholder": "Chat"
-    },
-    domProps: {
-      "value": (_vm.message)
-    },
-    on: {
-      "keypress": function($event) {
-        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
-        _vm.sendMessage($event)
-      },
-      "keydown": function($event) {
-        if (!('button' in $event) && _vm._k($event.keyCode, "tab", 9)) { return null; }
-        _vm.autocomplete($event)
-      },
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.message = $event.target.value
-      }
-    }
-  })])]), _vm._v(" "), _c('div', {
+  })), _vm._v(" "), _c('vue-chat')], 1), _vm._v(" "), _c('div', {
     staticClass: "game"
-  }, [(_vm.view === 'config') ? _c('vue-config') : _vm._e()], 1)])], 1)
+  }, [(_vm.view === 'config') ? _c('vue-settings') : _vm._e()], 1)])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -42144,193 +42016,11 @@ if(false) {
 }
 
 /***/ }),
-/* 597 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
-//
-//
-//
-//
-//
-//
-
-var _vuex = __webpack_require__(118);
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-exports.default = {
-    computed: _extends({}, (0, _vuex.mapState)({
-        players: function players(state) {
-            return state.game.settings.players;
-        },
-        score: function score(state) {
-            return state.game.settings.score;
-        }
-    }), {
-        host: function host() {
-            return this.$store.getters.host === this.$store.state.player.id;
-        }
-    }),
-    methods: {
-        set: function set(target, event) {
-            if (this.host) {
-                this.$store.dispatch('settings', _defineProperty({}, target, Number(event.target.value)));
-            }
-        },
-        shift: function shift(target, event) {
-            if (this.host) {
-                this.$store.dispatch('settings', _defineProperty({}, target, Math.min(20, Math.max(3, this[target] + (event.deltaY < 0 ? 1 : -1)))));
-            }
-        }
-    }
-};
-
-/***/ }),
-/* 598 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(53)();
-// imports
-
-
-// module
-exports.push([module.i, "\n.settings-setting {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 599 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/* styles */
-__webpack_require__(601)
-
-var Component = __webpack_require__(58)(
-  /* script */
-  __webpack_require__(597),
-  /* template */
-  __webpack_require__(600),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/niels/projects/cifop/assets/components/room/config.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] config.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-47916afd", Component.options)
-  } else {
-    hotAPI.reload("data-v-47916afd", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 600 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "game-content settings"
-  }, [_c('label', {
-    staticClass: "settings-setting"
-  }, [_vm._v("Players "), _c('input', {
-    staticClass: "input",
-    attrs: {
-      "type": "number",
-      "min": "3",
-      "max": "20",
-      "disabled": !_vm.host
-    },
-    domProps: {
-      "value": _vm.players
-    },
-    on: {
-      "input": function($event) {
-        _vm.set('players', $event)
-      },
-      "wheel": function($event) {
-        _vm.shift('players', $event)
-      }
-    }
-  })]), _vm._v(" "), _c('label', {
-    staticClass: "settings-setting"
-  }, [_vm._v("Score "), _c('input', {
-    staticClass: "input",
-    attrs: {
-      "type": "number",
-      "min": "2",
-      "max": "20",
-      "disabled": !_vm.host
-    },
-    domProps: {
-      "value": _vm.score
-    },
-    on: {
-      "input": function($event) {
-        _vm.set('score', $event)
-      },
-      "wheel": function($event) {
-        _vm.shift('score', $event)
-      }
-    }
-  })])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-47916afd", module.exports)
-  }
-}
-
-/***/ }),
-/* 601 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(598);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(59)("10983cfc", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-47916afd\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./config.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-47916afd\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./config.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 597 */,
+/* 598 */,
+/* 599 */,
+/* 600 */,
+/* 601 */,
 /* 602 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42553,6 +42243,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function (context) {
+    context.commit('clearChat');
+    context.commit('clearPlayers');
+
     _socket2.default.transmit('leave');
 };
 
@@ -42642,6 +42335,445 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     id: null,
     nick: null
+};
+
+/***/ }),
+/* 614 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _vuex = __webpack_require__(118);
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+exports.default = {
+    computed: _extends({}, (0, _vuex.mapState)({
+        players: function players(state) {
+            return state.game.settings.players;
+        },
+        score: function score(state) {
+            return state.game.settings.score;
+        }
+    }), {
+        host: function host() {
+            return this.$store.getters.host === this.$store.state.player.id;
+        }
+    }),
+    methods: {
+        set: function set(target, event) {
+            if (this.host) {
+                this.$store.dispatch('settings', _defineProperty({}, target, Number(event.target.value)));
+            }
+        },
+        shift: function shift(target, event) {
+            if (this.host) {
+                this.$store.dispatch('settings', _defineProperty({}, target, Math.min(20, Math.max(3, this[target] + (event.deltaY < 0 ? 1 : -1)))));
+            }
+        },
+        startGame: function startGame(event) {
+            console.log(event);
+        }
+    }
+};
+
+/***/ }),
+/* 615 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(53)();
+// imports
+
+
+// module
+exports.push([module.i, "\n.settings-setting {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 616 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(618)
+
+var Component = __webpack_require__(58)(
+  /* script */
+  __webpack_require__(614),
+  /* template */
+  __webpack_require__(617),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/niels/projects/cifop/assets/components/room/settings.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] settings.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-086b62c4", Component.options)
+  } else {
+    hotAPI.reload("data-v-086b62c4", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 617 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "game-content settings"
+  }, [_c('label', {
+    staticClass: "settings-setting"
+  }, [_vm._v("Players "), _c('input', {
+    staticClass: "input",
+    attrs: {
+      "type": "number",
+      "min": "3",
+      "max": "20",
+      "disabled": !_vm.host
+    },
+    domProps: {
+      "value": _vm.players
+    },
+    on: {
+      "input": function($event) {
+        _vm.set('players', $event)
+      },
+      "wheel": function($event) {
+        _vm.shift('players', $event)
+      }
+    }
+  })]), _vm._v(" "), _c('label', {
+    staticClass: "settings-setting"
+  }, [_vm._v("Score "), _c('input', {
+    staticClass: "input",
+    attrs: {
+      "type": "number",
+      "min": "2",
+      "max": "20",
+      "disabled": !_vm.host
+    },
+    domProps: {
+      "value": _vm.score
+    },
+    on: {
+      "input": function($event) {
+        _vm.set('score', $event)
+      },
+      "wheel": function($event) {
+        _vm.shift('score', $event)
+      }
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "button",
+    on: {
+      "click": _vm.startGame
+    }
+  }, [_vm._v("Start game")])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-086b62c4", module.exports)
+  }
+}
+
+/***/ }),
+/* 618 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(615);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(59)("33e9cbfe", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-086b62c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./settings.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-086b62c4\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./settings.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 619 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(58)(
+  /* script */
+  __webpack_require__(621),
+  /* template */
+  __webpack_require__(620),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/niels/projects/cifop/assets/components/room/chat.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] chat.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2950a65a", Component.options)
+  } else {
+    hotAPI.reload("data-v-2950a65a", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 620 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "chat"
+  }, [_c('ul', {
+    ref: "chat",
+    staticClass: "chat-messages"
+  }, _vm._l((_vm.chat), function(message, index) {
+    return _c('li', {
+      staticClass: "message"
+    }, [(message.type === 'message') ? _c('div', [(_vm.chat[index - 1] ? _vm.chat[index - 1].nick !== message.nick : true) ? _c('div', {
+      staticClass: "message-header"
+    }, [_c('span', {
+      staticClass: "message-nick"
+    }, [_vm._v(_vm._s(message.nick))]), _vm._v(" "), _c('span', {
+      staticClass: "message-date"
+    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])]) : _vm._e(), _vm._v(" "), _c('span', {
+      staticClass: "message-text",
+      domProps: {
+        "innerHTML": _vm._s(_vm.markdown(message.text))
+      }
+    })]) : _vm._e(), _vm._v(" "), (message.type === 'status') ? _c('div', [_c('div', {
+      staticClass: "message-header"
+    }, [_c('span', {
+      staticClass: "message-status"
+    }, [_vm._v(_vm._s(message.text))]), _vm._v(" "), _c('span', {
+      staticClass: "message-date"
+    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])])]) : _vm._e(), _vm._v(" "), (message.type === 'error') ? _c('div', [_c('div', {
+      staticClass: "message-header"
+    }, [_c('span', {
+      staticClass: "message-error"
+    }, [_vm._v(_vm._s(message.text))]), _vm._v(" "), _c('span', {
+      staticClass: "message-date"
+    }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])])]) : _vm._e()])
+  })), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.message),
+      expression: "message"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "maxlength": "140",
+      "placeholder": "Chat"
+    },
+    domProps: {
+      "value": (_vm.message)
+    },
+    on: {
+      "keypress": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13)) { return null; }
+        _vm.sendMessage($event)
+      },
+      "keydown": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "tab", 9)) { return null; }
+        _vm.autocomplete($event)
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.message = $event.target.value
+      }
+    }
+  })])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-2950a65a", module.exports)
+  }
+}
+
+/***/ }),
+/* 621 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+var _vue = __webpack_require__(61);
+
+var _vue2 = _interopRequireDefault(_vue);
+
+var _vuex = __webpack_require__(118);
+
+var _dateFns = __webpack_require__(441);
+
+var dateFns = _interopRequireWildcard(_dateFns);
+
+var _markdownIt = __webpack_require__(510);
+
+var _markdownIt2 = _interopRequireDefault(_markdownIt);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _markdown = new _markdownIt2.default({
+    html: false,
+    linkify: true,
+    breaks: false
+});
+
+// open linkified links in new tab, https://github.com/markdown-it/markdown-it/issues/46#issuecomment-83852242
+_markdown.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+    tokens[idx].attrPush(['target', '_blank']);
+
+    return self.renderToken(tokens, idx, options);
+};
+
+exports.default = {
+    data: function data() {
+        return {
+            message: null
+        };
+    },
+
+    computed: _extends({}, (0, _vuex.mapState)({
+        chat: function chat(state) {
+            var _this = this;
+
+            if (this.$refs.chat) {
+                _vue2.default.nextTick(function () {
+                    _this.$refs.chat.scrollTop = _this.$refs.chat.scrollHeight;
+                });
+            }
+
+            return state.chat.messages;
+        },
+        players: function players(state) {
+            return state.game.players;
+        }
+    })),
+    methods: {
+        sendMessage: function sendMessage(event) {
+            this.$store.dispatch('sendMessage', this.message);
+
+            this.message = null;
+        },
+        autocomplete: function autocomplete(event) {
+            event.preventDefault();
+
+            var words = this.message.split(' ');
+
+            var match = this.players.find(function (player) {
+                return player.nick.match(new RegExp('^' + words.slice(-1)[0], 'i'));
+            });
+
+            if (match) {
+                if (words.length === 1) {
+                    this.message = match.nick + ': ';
+                } else {
+                    this.message = words.slice(0, -1).join(' ') + ' ' + match.nick + ' ';
+                }
+            }
+        },
+        format: function format(date, _format) {
+            return dateFns.format(date, _format);
+        },
+        markdown: function markdown(text) {
+            return _markdown.renderInline(text);
+        }
+    }
 };
 
 /***/ })

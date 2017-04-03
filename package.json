@@ -9,7 +9,8 @@
     "webpack": "webpack",
     "babel": "babel src -d dist",
     "watch-webpack": "webpack --progress --colors --watch",
-    "watch-babel": "babel src -w -d dist"
+    "watch-babel": "babel src -w -d dist",
+    "database-fill": "knex seed:run"
   },
   "repository": {
     "type": "git",

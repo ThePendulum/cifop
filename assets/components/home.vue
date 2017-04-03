@@ -63,7 +63,6 @@
         box-shadow: 0 .5rem 0 0 $secondary-shadow;
         font-size: 2rem;
         font-weight: bold;
-        text-decoration: none;
         text-shadow: 1px 1px 0 $secondary-light, -1px -1px 0 $secondary-shadow;
         cursor: pointer;
     }
