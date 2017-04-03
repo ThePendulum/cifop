@@ -24308,7 +24308,7 @@ exports = module.exports = __webpack_require__(53)();
 
 
 // module
-exports.push([module.i, "\n.header {\n  display: flex;\n  justify-content: space-between;\n  box-sizing: border-box;\n  color: #fff;\n  background: #2294ff;\n  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);\n}\n.header-body {\n  padding: .5rem 1rem;\n}\n.logo {\n  display: inline-block;\n}\n.logo .icon {\n    width: 4rem;\n}\n.user {\n  font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.header {\n  display: flex;\n  flex-shrink: 0;\n  justify-content: space-between;\n  box-sizing: border-box;\n  color: #fff;\n  background: #2294ff;\n  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);\n}\n.header-body {\n  padding: .5rem 1rem;\n}\n.logo {\n  display: inline-block;\n}\n.logo .icon {\n    width: 4rem;\n}\n.user {\n  font-weight: bold;\n}\n", ""]);
 
 // exports
 
@@ -41841,6 +41841,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 var _vue = __webpack_require__(61);
 
@@ -41895,6 +41902,9 @@ exports.default = {
         },
         players: function players(state) {
             return state.game.players;
+        },
+        me: function me(state) {
+            return state.player;
         }
     })),
     mounted: function mounted() {
@@ -41914,7 +41924,7 @@ exports = module.exports = __webpack_require__(53)();
 
 
 // module
-exports.push([module.i, "\n.room {\n  display: flex;\n  flex-grow: 1;\n}\n.game {\n  flex-grow: 1;\n}\n.game-content {\n  padding: .5rem;\n}\n.sidebar {\n  display: flex;\n  flex-direction: column;\n  width: 20rem;\n  box-sizing: border-box;\n  border-right: solid 1px rgba(0, 0, 0, 0.2);\n}\n.players {\n  flex-grow: 1;\n  list-style: none;\n  padding: .5rem;\n  margin: 0;\n  line-height: 1.5;\n  overflow-y: auto;\n}\n.player.host {\n  font-weight: bold;\n}\n.chat {\n  display: flex;\n  flex-direction: column;\n  height: 20rem;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  flex-grow: 1;\n  list-style: none;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.room {\n  display: flex;\n  flex-grow: 1;\n}\n.game {\n  flex-grow: 1;\n}\n.game-content {\n  padding: .5rem;\n}\n.sidebar {\n  display: flex;\n  flex-direction: column;\n  width: 20rem;\n  box-sizing: border-box;\n  border-right: solid 1px rgba(0, 0, 0, 0.2);\n}\n.players {\n  list-style: none;\n  flex-grow: 1;\n  padding: .5rem;\n  margin: 0;\n  line-height: 1.5;\n  overflow-y: auto;\n}\n.player {\n  display: flex;\n  justify-content: space-between;\n  padding: .25rem 0;\n}\n.player .flag {\n    padding: .25rem;\n    font-size: .75rem;\n    color: #fff;\n    background: #2294ff;\n    border-radius: 2px;\n}\n.player-nick.me {\n  color: #2294ff;\n}\n.player-nick.host {\n  color: #ff5e10;\n}\n", ""]);
 
 // exports
 
@@ -41972,11 +41982,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "players"
   }, _vm._l((_vm.players), function(player) {
     return _c('li', {
-      staticClass: "player",
+      staticClass: "player"
+    }, [_c('span', {
+      staticClass: "player-nick",
       class: {
-        host: player.host
+        host: player.host, me: player.id === _vm.me.id
       }
-    }, [_vm._v(_vm._s(player.nick))])
+    }, [_vm._v(_vm._s(player.nick))]), _vm._v(" "), _c('span', {
+      staticClass: "player-flags"
+    }, [(player.id === _vm.me.id) ? _c('span', {
+      staticClass: "flag"
+    }, [_vm._v("me")]) : _vm._e(), _vm._v(" "), (player.host) ? _c('span', {
+      staticClass: "flag"
+    }, [_vm._v("host")]) : _vm._e()])])
   })), _vm._v(" "), _c('vue-chat')], 1), _vm._v(" "), _c('div', {
     staticClass: "game"
   }, [(_vm.view === 'config') ? _c('vue-settings') : _vm._e()], 1)])], 1)
@@ -42538,6 +42556,10 @@ if(false) {
 /* 619 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
+/* styles */
+__webpack_require__(623)
+
 var Component = __webpack_require__(58)(
   /* script */
   __webpack_require__(621),
@@ -42581,11 +42603,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, _vm._l((_vm.chat), function(message, index) {
     return _c('li', {
       staticClass: "message"
-    }, [(message.type === 'message') ? _c('div', [(_vm.chat[index - 1] ? _vm.chat[index - 1].nick !== message.nick : true) ? _c('div', {
+    }, [(message.type === 'message') ? _c('div', [(_vm.chat[index - 1] ? _vm.chat[index - 1].player !== message.player : true) ? _c('div', {
       staticClass: "message-header"
     }, [_c('span', {
-      staticClass: "message-nick"
-    }, [_vm._v(_vm._s(message.nick))]), _vm._v(" "), _c('span', {
+      staticClass: "message-nick",
+      class: {
+        me: message.player === _vm.me.id
+      }
+    }, [_vm._v(_vm._s(_vm.nicks.get(message.player)))]), _vm._v(" "), _c('span', {
       staticClass: "message-date"
     }, [_vm._v(_vm._s(_vm.format(message.date, 'HH:mm')))])]) : _vm._e(), _vm._v(" "), _c('span', {
       staticClass: "message-text",
@@ -42742,8 +42767,19 @@ exports.default = {
         },
         players: function players(state) {
             return state.game.players;
+        },
+        me: function me(state) {
+            return state.player;
         }
-    })),
+    }), {
+        nicks: function nicks() {
+            return this.players.reduce(function (acc, player) {
+                acc.set(player.id, player.nick);
+
+                return acc;
+            }, new Map());
+        }
+    }),
     methods: {
         sendMessage: function sendMessage(event) {
             this.$store.dispatch('sendMessage', this.message);
@@ -42775,6 +42811,46 @@ exports.default = {
         }
     }
 };
+
+/***/ }),
+/* 622 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(53)();
+// imports
+
+
+// module
+exports.push([module.i, "\n.chat {\n  display: flex;\n  flex-direction: column;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n  overflow: hidden;\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  list-style: none;\n  position: relative;\n  height: 20rem;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  resize: vertical;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-nick.me {\n      color: #2294ff;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 623 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(622);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(59)("24f37267", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-2950a65a\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./chat.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-rewriter.js?{\"id\":\"data-v-2950a65a\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./chat.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

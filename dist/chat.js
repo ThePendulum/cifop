@@ -13,7 +13,7 @@ module.exports = function (events) {
     events.on('message', function (msg, player) {
         var game = Game.games.get(player.gameId);
 
-        if (game && game.players.has(player)) {
+        if (game && game.players.has(player) && msg) {
             player.throttleStack = player.throttleStack.concat(new Date().getTime()).slice(-5);
 
             var text = msg.trim().slice(0, 140);
@@ -22,7 +22,7 @@ module.exports = function (events) {
                 Game.broadcast(game.id, 'message', {
                     text: text,
                     type: 'message',
-                    nick: player.nick,
+                    player: player.id,
                     date: new Date()
                 });
             } else {

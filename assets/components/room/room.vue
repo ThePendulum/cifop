@@ -5,7 +5,14 @@
         <div class="room">
             <div class="sidebar">
                 <ul class="players">
-                    <li v-for="player in players" class="player" :class="{host: player.host}">{{player.nick}}</li>
+                    <li v-for="player in players" class="player">
+                        <span class="player-nick" :class="{host: player.host, me: player.id === me.id}">{{player.nick}}</span>
+
+                        <span class="player-flags">
+                            <span v-if="player.id === me.id" class="flag">me</span>
+                            <span v-if="player.host" class="flag">host</span>
+                        </span>
+                    </li>
                 </ul>
 
                 <vue-chat />
@@ -54,6 +61,9 @@
                 },
                 players(state) {
                     return state.game.players;
+                },
+                me(state) {
+                    return state.player;
                 }
             })
         },
@@ -91,8 +101,8 @@
     }
 
     .players {
-        flex-grow: 1;
         list-style: none;
+        flex-grow: 1;
         padding: .5rem;
         margin: 0;
         line-height: 1.5;
@@ -100,63 +110,26 @@
     }
 
     .player {
-        &.host {
-            font-weight: bold;
-        }
-    }
-
-    .chat {
         display: flex;
-        flex-direction: column;
-        height: 20rem;
-        border-top: solid 1px $crease;
+        justify-content: space-between;
+        padding: .25rem 0;
 
-        .input {
-            border-top: solid 1px $crease;
-
-            &:not(:focus) {
-                box-shadow: none;
-            }
+        .flag {
+            padding: .25rem;
+            font-size: .75rem;
+            color: $text-light;
+            background: $primary;
+            border-radius: 2px;
         }
     }
 
-    .chat-messages {
-        flex-grow: 1;
-        list-style: none;
-        box-sizing: border-box;
-        padding: .5rem;
-        margin: 0;
-        overflow-y: auto;
-
-        .message {
-            padding: .25rem 0;
+    .player-nick {
+        &.me {
+            color: $primary;
         }
 
-        .message-header {
-            display: flex;
-            justify-content: space-between;
-            margin: 0 0 .25rem;
-        }
-
-        .message-text {
-            word-wrap: break-word;
-        }
-
-        .message-date {
-            color: $grey;
-        }
-
-        .message-nick {
-            font-weight: bold;
-        }
-
-        .message-status {
+        &.host {
             color: $secondary;
-        }
-
-        .message-error {
-            color: $error;
-            font-weight: bold;
         }
     }
 </style>

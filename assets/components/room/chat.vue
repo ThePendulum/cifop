@@ -3,8 +3,8 @@
         <ul class="chat-messages" ref="chat">
             <li v-for="(message, index) in chat" class="message">
                 <div v-if="message.type === 'message'">
-                    <div class="message-header" v-if="chat[index - 1] ? chat[index - 1].nick !== message.nick : true">
-                        <span class="message-nick">{{message.nick}}</span>
+                    <div class="message-header" v-if="chat[index - 1] ? chat[index - 1].player !== message.player : true">
+                        <span class="message-nick" :class="{me: message.player === me.id}">{{nicks.get(message.player)}}</span>
                         <span class="message-date">{{format(message.date, 'HH:mm')}}</span>
                     </div>
 
@@ -69,8 +69,18 @@
                 },
                 players(state) {
                     return state.game.players;
+                },
+                me(state) {
+                    return state.player;
                 }
-            })
+            }),
+            nicks() {
+                return this.players.reduce((acc, player) => {
+                    acc.set(player.id, player.nick);
+
+                    return acc;
+                }, new Map());
+            }
         },
         methods: {
             sendMessage(event) {
@@ -104,3 +114,68 @@
         }
     };
 </script>
+
+<style lang="sass">
+    @import '../../css/theme';
+
+    .chat {
+        display: flex;
+        flex-direction: column;
+        border-top: solid 1px $crease;
+        overflow: hidden;
+
+        .input {
+            border-top: solid 1px $crease;
+
+            &:not(:focus) {
+                box-shadow: none;
+            }
+        }
+    }
+
+    .chat-messages {
+        list-style: none;
+        position: relative;
+        height: 20rem;
+        box-sizing: border-box;
+        padding: .5rem;
+        margin: 0;
+        resize: vertical;
+        overflow-y: auto;
+
+        .message {
+            padding: .25rem 0;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 0 .25rem;
+        }
+
+        .message-text {
+            word-wrap: break-word;
+        }
+
+        .message-date {
+            color: $grey;
+        }
+
+        .message-nick {
+            font-weight: bold;
+
+            &.me {
+                color: $primary;
+            }
+        }
+
+        .message-status {
+            color: $secondary;
+        }
+
+        .message-error {
+            color: $error;
+            font-weight: bold;
+        }
+    }
+</style>

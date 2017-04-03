@@ -44,6 +44,7 @@
 
     .header {
         display: flex;
+        flex-shrink: 0;
         justify-content: space-between;
         box-sizing: border-box;
         color: $text-light;
