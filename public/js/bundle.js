@@ -15203,6 +15203,10 @@ var _chat = __webpack_require__(204);
 
 var _chat2 = _interopRequireDefault(_chat);
 
+var _packs = __webpack_require__(626);
+
+var _packs2 = _interopRequireDefault(_packs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.use(_vuex2.default);
@@ -15211,7 +15215,8 @@ exports.default = new _vuex2.default.Store({
     modules: {
         game: _game2.default,
         player: _player2.default,
-        chat: _chat2.default
+        chat: _chat2.default,
+        packs: _packs2.default
     }
 });
 
@@ -18267,7 +18272,8 @@ exports.default = {
     players: [],
     settings: {
         players: 8,
-        score: 8
+        score: 8,
+        packs: new Set()
     }
 };
 
@@ -41884,7 +41890,8 @@ exports.default = {
         return {
             id: this.$route.params.id,
             message: null,
-            view: 'config'
+            view: 'config',
+            packs: []
         };
     },
 
@@ -42375,6 +42382,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
 
 var _vuex = __webpack_require__(118);
 
@@ -42387,6 +42398,9 @@ exports.default = {
         },
         score: function score(state) {
             return state.game.settings.score;
+        },
+        packs: function packs(state) {
+            return state.packs.available;
         }
     }), {
         host: function host() {
@@ -42407,6 +42421,9 @@ exports.default = {
         startGame: function startGame(event) {
             console.log(event);
         }
+    },
+    mounted: function mounted() {
+        this.$store.dispatch('fetchPacks');
     }
 };
 
@@ -42511,7 +42528,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.shift('score', $event)
       }
     }
-  })]), _vm._v(" "), _c('button', {
+  })]), _vm._v(" "), _c('ul', _vm._l((_vm.packs), function(pack) {
+    return _c('li', [_vm._v(_vm._s(pack.name))])
+  })), _vm._v(" "), _c('button', {
     staticClass: "button",
     on: {
       "click": _vm.startGame
@@ -42821,7 +42840,7 @@ exports = module.exports = __webpack_require__(53)();
 
 
 // module
-exports.push([module.i, "\n.chat {\n  display: flex;\n  flex-direction: column;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n  overflow: hidden;\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  list-style: none;\n  position: relative;\n  height: 20rem;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  resize: vertical;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-nick.me {\n      color: #2294ff;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\n.chat {\n  display: flex;\n  flex-direction: column;\n  border-top: solid 1px rgba(0, 0, 0, 0.2);\n  overflow: hidden;\n}\n.chat .input {\n    border-top: solid 1px rgba(0, 0, 0, 0.2);\n}\n.chat .input:not(:focus) {\n      box-shadow: none;\n}\n.chat-messages {\n  list-style: none;\n  position: relative;\n  height: 20rem;\n  box-sizing: border-box;\n  padding: .5rem;\n  margin: 0;\n  resize: vertical;\n  overflow-y: auto;\n}\n.chat-messages .message {\n    padding: .25rem 0;\n}\n.chat-messages .message-header {\n    display: flex;\n    justify-content: space-between;\n    margin: 0 0 .25rem;\n}\n.chat-messages .message-text {\n    word-wrap: break-word;\n}\n.chat-messages .message-date {\n    padding: 0 0 0 .5rem;\n    color: #aaa;\n}\n.chat-messages .message-nick {\n    font-weight: bold;\n}\n.chat-messages .message-nick.me {\n      color: #2294ff;\n}\n.chat-messages .message-status {\n    color: #ff5e10;\n}\n.chat-messages .message-error {\n    color: #f66;\n    font-weight: bold;\n}\n", ""]);
 
 // exports
 
@@ -42851,6 +42870,116 @@ if(false) {
  // When the module is disposed, remove the <style> tags
  module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 624 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function (context) {
+    return fetch(window.location.origin + '/api/packs', {
+        method: 'GET',
+        credentials: 'same-origin'
+    }).then(function (res) {
+        return res.json();
+    }).then(function (packs) {
+        context.commit('setAvailablePacks', packs);
+
+        return packs;
+    }).catch(function (error) {
+        console.log(error);
+    });
+};
+
+;
+
+/***/ }),
+/* 625 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _fetch = __webpack_require__(624);
+
+var _fetch2 = _interopRequireDefault(_fetch);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    fetchPacks: _fetch2.default
+};
+
+/***/ }),
+/* 626 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _state = __webpack_require__(628);
+
+var _state2 = _interopRequireDefault(_state);
+
+var _mutations = __webpack_require__(627);
+
+var _mutations2 = _interopRequireDefault(_mutations);
+
+var _actions = __webpack_require__(625);
+
+var _actions2 = _interopRequireDefault(_actions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    state: _state2.default,
+    mutations: _mutations2.default,
+    actions: _actions2.default
+};
+
+/***/ }),
+/* 627 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    setAvailablePacks: function setAvailablePacks(state, packs) {
+        state.available = packs;
+    }
+};
+
+/***/ }),
+/* 628 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    available: []
+};
 
 /***/ })
 /******/ ]);

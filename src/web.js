@@ -18,6 +18,7 @@ const expressWs = require('express-ws');
 const Hub = require('./hub.js');
 
 const createGame = require('./api/createGame.js');
+const fetchPacks = require('./api/fetchPacks.js');
 
 const store = new knexSessionStore({knex});
 
@@ -47,6 +48,7 @@ module.exports = function() {
     });
 
     router.post('/api/game', createGame);
+    router.get('/api/packs', fetchPacks);
 
     router.ws('/socket', (ws, req) => {
         hub.connect(ws, req);

@@ -158,6 +158,7 @@
         }
 
         .message-date {
+            padding: 0 0 0 .5rem;
             color: $grey;
         }
 
