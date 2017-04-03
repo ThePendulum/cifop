@@ -3,7 +3,7 @@
         <vue-header />
 
         <div class="home">
-            <button v-if="!redirecting" class="newgame" @click="createGame">New game</button>
+            <button v-if="!redirecting" class="button newgame" @click="createGame">New game</button>
         </div>
     </div>
 </template>
@@ -53,17 +53,8 @@
     }
 
     .newgame {
-        display: inline-block;
-        box-sizing: border-box;
         padding: 2rem;
-        border: none;
         border-radius: 1rem;
-        color: $text-light;
-        background: $secondary;
-        box-shadow: 0 .5rem 0 0 $secondary-shadow;
         font-size: 2rem;
-        font-weight: bold;
-        text-shadow: 1px 1px 0 $secondary-light, -1px -1px 0 $secondary-shadow;
-        cursor: pointer;
     }
 </style>

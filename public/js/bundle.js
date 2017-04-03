@@ -24322,7 +24322,7 @@ exports = module.exports = __webpack_require__(53)();
 
 
 // module
-exports.push([module.i, "\n.home {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  flex-grow: 1;\n}\n.home .copy {\n    font-size: 3rem;\n}\n.newgame {\n  display: inline-block;\n  box-sizing: border-box;\n  padding: 2rem;\n  border: none;\n  border-radius: 1rem;\n  color: #fff;\n  background: #ff5e10;\n  box-shadow: 0 0.5rem 0 0 #ce4300;\n  font-size: 2rem;\n  font-weight: bold;\n  text-shadow: 1px 1px 0 #ff9d6f, -1px -1px 0 #ce4300;\n  cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.home {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  flex-grow: 1;\n}\n.home .copy {\n    font-size: 3rem;\n}\n.newgame {\n  padding: 2rem;\n  border-radius: 1rem;\n  font-size: 2rem;\n}\n", ""]);
 
 // exports
 
@@ -39194,7 +39194,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('vue-header'), _vm._v(" "), _c('div', {
     staticClass: "home"
   }, [(!_vm.redirecting) ? _c('button', {
-    staticClass: "newgame",
+    staticClass: "button newgame",
     on: {
       "click": _vm.createGame
     }
